@@ -43,6 +43,7 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *,cover
+coverage/
 .hypothesis/
 
 # Translations
@@ -79,6 +80,7 @@ celerybeat-schedule
 .env
 
 # virtualenv
+.venv
 venv/
 ENV/
 
@@ -88,4 +90,21 @@ ENV/
 # Rope project settings
 .ropeproject
 
+db.sqlite3
+node_modules/
+
+
+scss/*.css
+tmp/**
+tmp/**/*
 .idea/
+*.map
+.cache/
+*.env
+
+
+# {{cookiecutter.project_name}} specific
+{{cookiecutter.project_slug}}/static_src/image_playground/output/*
+{{cookiecutter.project_slug}}/static_src/image_playground/input/*
+{{cookiecutter.project_slug}}/settings/local.py
+{{cookiecutter.project_slug}}-server-config/

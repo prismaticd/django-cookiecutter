@@ -1,0 +1,73 @@
+stages:
+- build
+- test
+- release-image
+- pages
+
+variables:
+  CONTAINER_TEST_IMAGE: registry.gitlab.com/{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}:$CI_BUILD_REF_NAME
+  CONTAINER_RELEASE_IMAGE: registry.gitlab.com/{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}:latest
+  DOCKER_DRIVER: overlay
+  MYSQL_DATABASE: "{{cookiecutter.project_slug}}db"
+  MYSQL_ROOT_PASSWORD: "rootpassword"
+  DB_USER: "root"
+  DB_PORT: "3306"
+  DB_HOST: "mysql"
+
+cache:
+  untracked: true
+
+build:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker build --pull  --cache-from $CONTAINER_TEST_IMAGE  -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+  tags:
+    - linux
+test1:
+  stage: test
+  services:
+    - mysql:latest
+  image: $CONTAINER_TEST_IMAGE
+  script:
+    - ./entrypoint.sh test
+  tags:
+    - linux
+  artifacts:
+    paths:
+      - coverage/
+
+release-image:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: release
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
+  only:
+    - master
+  tags:
+    - linux
+
+pages:
+  stage: deploy
+  script:
+    - rm -rf public/coverage
+    - mv coverage/ public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+  only:
+    - master
+

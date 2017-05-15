@@ -1,0 +1,8 @@
+
+**/*.pyc
+venv/
+node_modules/
+db.sqlite3
+.static/
+media/
+local.py

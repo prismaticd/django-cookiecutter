@@ -1,0 +1,12 @@
+pip>9
+django>1.11,<2
+boto
+requests
+django-settings-export
+
+django-import-export
+django-storages
+boto3
+django-rq
+django-redis
+rq_scheduler

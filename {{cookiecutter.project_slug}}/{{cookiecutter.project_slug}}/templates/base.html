@@ -1,0 +1,108 @@
+{% raw %}{% load static %}{% endraw %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block head_title %}{% endblock %} - {{cookiecutter.project_name}}</title>
+{% raw %}{% if settings.GTM_ID %}
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','{{ settings.GTM_ID }}');</script>
+<!-- End Google Tag Manager -->
+{% endif %}
+{% block semantic %}
+    {# https://cdnjs.com/libraries/semantic-ui #}
+    {# https://cdnjs.com/libraries/jquery #}
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  {% if settings.DEBUG %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.css" integrity="sha256-cABFXjDceYV7Yh6IuUexjSGcf8IKolv4x1tXbNU2lsE=" crossorigin="anonymous" />
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.js" integrity="sha256-8aCbz/5bgJjpBRsizbrV3SjTIB+KNdZlshkP8zbYpuc=" crossorigin="anonymous"></script>
+  {% else %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.css" integrity="sha256-wT6CFc7EKRuf7uyVfi+MQNHUzojuHN2pSw0YWFt2K5E=" crossorigin="anonymous" />
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.min.js" integrity="sha256-flVaeawsBV96vCHiLmXn03IRJym7+ZfcLVvUWONCas8=" crossorigin="anonymous"></script>
+  {% endif %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+{% endblock %}
+
+  <script defer src="{% static 'js/base.js' %}" ></script>
+  <link rel="stylesheet"  href="{% static 'css/base.css' %}" />
+
+  {% block app_styles %}{% endblock %}
+  {% block specific_styles %}{% endblock %}
+
+</head>
+<body>
+  {% if settings.GTM_ID %}
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ settings.GTM_ID }}"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  {% endif %}
+
+    {% block app_js %}{% endblock %}
+    {% block specific_js %}{% endblock %}
+
+    {% block menu %}
+      <nav>
+        <div class="ui menu" id="desktop_nav">
+        </div>
+      </nav>
+    {% endblock %}
+
+    {% block header %}
+      <div class="logo">
+        {% block top_logo %}
+        {% endblock %}
+      </div>
+      {% block top_progress %}{% endblock %}
+      <h1 class="ui centered inverted header">
+        {% block top_title %}{% endblock %}
+        <div class="sub header">
+          {% block top_subtitle  %}{% endblock %}
+        </div>
+      </h1>
+      {% block top_extra %}{% endblock %}
+    </header>
+    {% endblock %}
+
+    {% if messages %}
+      <div class="message-box">
+        {% for message in messages %}
+          <div class="ui message info transition">
+            <i class="close icon"></i>
+            <div class="header">Message:</div>
+            <p>{{ message }}</p>
+          </div>
+      {% endfor %}
+      </div>
+    {% endif %}
+
+    <div id="wrapper" class="{% block wrapper_background %}{% endblock %}">
+      {% block content_max_width %}<div class="content slow-fade hide"><div class="ui container">{% block content %}{% endblock %}</div></div>{% endblock %}
+
+      {% block content_full_width %}<div class="slow-fade hide"></div>{% endblock %}
+    </div>
+
+
+  {% block footer %}
+    <footer class="med-fade hide">
+
+
+      <div class="ui horizontal stackable list">
+        <a href="{% url 'home_app:home-page' %}" class="item">Home</a>
+      </div>
+    </footer>
+  {% endblock %}
+
+  {% block before_end_body %}{% endblock %}
+
+  {% if settings.DEBUG %}
+  <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+  {% endif %}
+</body>
+
+
+</html>{% endraw %}

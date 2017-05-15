@@ -1,0 +1,27 @@
+#  Install Docker + Nginx + Docker-Compose on ubuntu 16.04
+#  https://gist.github.com/Benoss/3a9aa3c8a5a6b1d94537c02319546534
+version: '3.2'
+services:
+  web1:
+    build: .
+    command: prod
+    ports:
+      - "8001:80"
+    env_file:
+      - {{cookiecutter.project_slug}}_prod.env
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:80/healthcheck/ --max-time 10 --header 'Host: {{cookiecutter.prod_host}}' || exit 1" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+  worker:
+    build: .
+    command: manage rqworker default
+    env_file:
+      - {{cookiecutter.project_slug}}_prod.env
+  scheduler:
+    build: .
+    command: manage rqscheduler
+    env_file:
+      - {{cookiecutter.project_slug}}_prod.env
+

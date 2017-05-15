@@ -1,0 +1,4 @@
+-r base.txt
+PyMySQL
+django-debug-toolbar
+django-extensions
