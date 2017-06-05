@@ -17,5 +17,8 @@
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "^2.1.2",
     "gulp-uglifyjs": "^0.6.2"
+  },
+  "dependencies": {
+    "bulma": "^0.4.2"
   }
 }
