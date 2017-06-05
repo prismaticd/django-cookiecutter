@@ -60,6 +60,7 @@ gulp.task('watch', function () {
     refresh.listen();
   gulp.watch(root_input + "sass/**/*.scss", ['sass']);
   gulp.watch(root_input + "js/**/*.js", ['js']);
+  gulp.watch(root_input + "../templates/**/*.html").on("change", refresh.reload);
 });
 
 gulp.task('default', ['sass', 'js', 'watch'])
