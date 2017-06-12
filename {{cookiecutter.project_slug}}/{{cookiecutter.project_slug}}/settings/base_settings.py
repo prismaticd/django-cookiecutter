@@ -34,6 +34,22 @@ INSTALLED_APPS = [
     'rq_scheduler',
     'django_redis',
 
+    {% if cookiecutter.install_wagtail == "y" %}
+    'wagtail.wagtailforms',
+    'wagtail.wagtailredirects',
+    'wagtail.wagtailembeds',
+    'wagtail.wagtailsites',
+    'wagtail.wagtailusers',
+    'wagtail.wagtailsnippets',
+    'wagtail.wagtaildocs',
+    'wagtail.wagtailimages',
+    'wagtail.wagtailsearch',
+    'wagtail.wagtailadmin',
+    'wagtail.wagtailcore',
+
+    'modelcluster',
+    'taggit',
+    {% endif %}
 ]
 
 MIDDLEWARE = [
@@ -45,7 +61,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    '{{cookiecutter.project_slug}}.contrib.request.global_middleware'
+    '{{cookiecutter.project_slug}}.contrib.request.global_middleware',
+    {% if cookiecutter.install_wagtail == "y" %}
+    'wagtail.wagtailcore.middleware.SiteMiddleware',
+    'wagtail.wagtailredirects.middleware.RedirectMiddleware',{% endif %}
+
 ]
 
 ROOT_URLCONF = '{{cookiecutter.project_slug}}.urls'
@@ -199,3 +219,5 @@ RQ_SHOW_ADMIN_LINK = True
 STATIC_LOGGING = {
     "env": os.environ.get("DJANGO_SETTINGS_MODULE", "").split(".")[-1]
 }
+{% if cookiecutter.install_wagtail == "y" %}
+WAGTAIL_SITE_NAME = '{{cookiecutter.project_name}}'{% endif %}

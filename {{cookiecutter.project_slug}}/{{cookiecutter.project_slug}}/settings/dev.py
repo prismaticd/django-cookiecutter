@@ -29,4 +29,9 @@ for key in RQ_QUEUES:
     RQ_QUEUES[key]['ASYNC'] = False
 
 
-from .local import *
+try:
+    from .local import *
+except ImportError:
+    import random
+    raise Exception("settings/local.py file is missing, create one with the line SECRET_KEY = '{}'".format(
+        ''.join((random.choice("abcdefghijklmnopqrstuvwxyz")) for x in range(48))))

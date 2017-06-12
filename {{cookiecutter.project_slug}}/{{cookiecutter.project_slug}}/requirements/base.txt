@@ -1,5 +1,6 @@
 pip>9
 django>1.11,<2
+{% if cookiecutter.install_wagtail == "y" %}wagtail{% endif %}
 boto
 requests
 django-settings-export
