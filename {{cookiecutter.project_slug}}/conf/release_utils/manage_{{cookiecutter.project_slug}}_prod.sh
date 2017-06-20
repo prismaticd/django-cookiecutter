@@ -32,7 +32,7 @@ case "$1" in
                 No ) exit;;
             esac
         done
-        curl -X POST -H 'Content-type: application/json' --data '{"text": "New Website version released in production!", "channel": "#dev", "username": "monkey-bot", "icon_emoji": ":monkey_face:"}' https://hooks.slack.com/services/
+        #curl -X POST -H 'Content-type: application/json' --data '{"text": "New Website version released in production!", "channel": "#dev", "username": "monkey-bot", "icon_emoji": ":monkey_face:"}' https://hooks.slack.com/services/
         echo "\nMigrate ?"
         select yn in "Yes" "No"; do
             case $yn in
@@ -52,5 +52,5 @@ case "$1" in
 ;;
 esac
 
-
+echo "Usage -> 'update' or 'logs' or 'manage' or 'bash'"
 
