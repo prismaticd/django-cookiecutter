@@ -17,16 +17,21 @@ variables:
 cache:
   untracked: true
 
+
 build:
-  image: docker:latest
+  image: docker:stable
   services:
-    - docker:dind
+    - docker:stable-dind
   stage: build
   before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
-    - docker pull $CONTAINER_TEST_IMAGE
-    - docker build --pull  --cache-from $CONTAINER_TEST_IMAGE  -t $CONTAINER_TEST_IMAGE .
+    - >
+      if ! docker pull $CONTAINER_TEST_IMAGE; then
+        docker build -t $CONTAINER_TEST_IMAGE .;
+      else
+        docker build --pull  --cache-from $CONTAINER_TEST_IMAGE  -t $CONTAINER_TEST_IMAGE .;
+      fi
     - docker push $CONTAINER_TEST_IMAGE
   tags:
     - linux
@@ -44,10 +49,10 @@ test1:
       - coverage/
 
 release-image:
+  stage: release-image
   image: docker:latest
   services:
     - docker:dind
-  stage: release
   before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
@@ -60,8 +65,8 @@ release-image:
     - linux
 
 pages:
-  stage: deploy
   script:
+    stage: release-image
     - rm -rf public/coverage
     - mv coverage/ public/
   artifacts:

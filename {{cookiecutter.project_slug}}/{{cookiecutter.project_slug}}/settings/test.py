@@ -18,7 +18,7 @@ ALLOWED_HOSTS = ["127.0.0.1"]
 
 SECRET_KEY = "TESTSECRETKEY"
 DEFAULT_FROM_EMAIL = "contact_test@{{cookiecutter.staging_host}}"
-
+{% if cookiecutter.install_rq == "y" %}
 CACHES = {
     'default': {
         'BACKEND': '{{cookiecutter.project_slug}}.contrib.fake_redis.FakeRedisCache',
@@ -27,3 +27,4 @@ CACHES = {
 
 for key in RQ_QUEUES:
     RQ_QUEUES[key]['ASYNC'] = False
+{% endif %}

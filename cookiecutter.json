@@ -5,5 +5,7 @@
   "gitlab_project_slug": "{{ cookiecutter.project_slug }}",
   "prod_host": "www.{{ cookiecutter.project_slug }}.com",
   "staging_host": "staging.{{ cookiecutter.prod_host }}",
-  "install_wagtail": "n"
+  "install_wagtail": "n",
+  "install_rq": "n",
+  "install_graypy_logging": "n"
 }

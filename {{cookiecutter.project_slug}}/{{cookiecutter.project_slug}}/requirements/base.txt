@@ -8,6 +8,7 @@ django-settings-export
 django-import-export
 django-storages
 boto3
-django-rq
+{% if cookiecutter.install_rq == "y" %}django-rq
 django-redis
-rq_scheduler
+rq_scheduler{% endif %}
+{% if cookiecutter.install_rq == "y" %}graypy{% endif %}

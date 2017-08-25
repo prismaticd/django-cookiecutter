@@ -11,14 +11,14 @@
   "license": "ISC",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-imagemin": "^3.2.0",
+    "gulp-imagemin": "^3.3.0",
     "gulp-refresh": "^1.1.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0",
-    "gulp-uglify": "^2.1.2",
+    "gulp-uglify": "^3.0.0",
     "gulp-uglifyjs": "^0.6.2"
   },
   "dependencies": {
-    "bulma": "^0.4.2"
+    "bulma": "^0.4.3"
   }
 }

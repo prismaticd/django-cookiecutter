@@ -29,11 +29,11 @@ INSTALLED_APPS = [
 
 
     'import_export',
-
+    {% if cookiecutter.install_rq == "y" %}
     'django_rq',
     'rq_scheduler',
     'django_redis',
-
+    { % endif %}
     {% if cookiecutter.install_wagtail == "y" %}
     'wagtail.wagtailforms',
     'wagtail.wagtailredirects',
@@ -198,7 +198,7 @@ MEDIA_SECRET = 'change_me_in_prod'
 # http://zachsnow.com/#!/blog/2016/multiline-template-tags-django/
 base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)
 
-
+{% if cookiecutter.install_rq == "y" %}
 CACHES = {
     'default': {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -215,6 +215,7 @@ RQ_QUEUES = {
      },
 }
 RQ_SHOW_ADMIN_LINK = True
+{% endif %}
 
 STATIC_LOGGING = {
     "env": os.environ.get("DJANGO_SETTINGS_MODULE", "").split(".")[-1]

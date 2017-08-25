@@ -17,9 +17,7 @@ urlpatterns = [
     url(r'^home/', home.urls),
     {% if cookiecutter.install_wagtail == "y" %}
     url(r'^cms/', include(wagtailadmin_urls)),
-    url(r'^documents/', include(wagtaildocs_urls)),
-    url(r'^', include(wagtail_urls)),{% endif %}
-
+    url(r'^documents/', include(wagtaildocs_urls)),{% endif %}
 ]
 
 if settings.DEBUG:
@@ -32,3 +30,8 @@ if settings.DEBUG:
 
     # Dev static
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+{% if cookiecutter.install_wagtail == "y" %}
+urlpatterns += [
+    url(r'^', include(wagtail_urls)),
+]{% endif %}
