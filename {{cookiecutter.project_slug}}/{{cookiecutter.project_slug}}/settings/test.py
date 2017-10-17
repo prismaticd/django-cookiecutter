@@ -2,7 +2,7 @@
 
 from .base_settings import *
 
-
+{% if cookiecutter.database_type == "mysql" %}
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -13,6 +13,18 @@ DATABASES = {
         'PORT': os.environ.get("DB_PORT "),
     }
 }
+{% elif cookiecutter.database_type == "postgres" %}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("POSTGRES_DB"),
+        'USER': os.environ.get("POSTGRES_USER"),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
+        'HOST': os.environ.get("DB_HOST"),
+        'PORT': os.environ.get("DB_PORT "),
+    }
+}
+{% endif %}
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 

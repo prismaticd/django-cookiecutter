@@ -8,15 +8,21 @@ variables:
   CONTAINER_TEST_IMAGE: registry.gitlab.com/{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: registry.gitlab.com/{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}:latest
   DOCKER_DRIVER: overlay
-  MYSQL_DATABASE: "{{cookiecutter.project_slug}}db"
+{% if cookiecutter.database_type == "mysql" %}  MYSQL_DATABASE: "{{cookiecutter.project_slug}}db"
   MYSQL_ROOT_PASSWORD: "rootpassword"
   DB_USER: "root"
   DB_PORT: "3306"
   DB_HOST: "mysql"
+{% elif cookiecutter.database_type == "postgres" %}  POSTGRES_DB: "{{cookiecutter.project_slug}}db"
+  POSTGRES_PASSWORD: "rootpassword"
+  POSTGRES_USER: "root"
+  DB_PORT: "5432"
+  DB_HOST: "postgres"
+{% endif %}
+
 
 cache:
   untracked: true
-
 
 build:
   image: docker:stable
@@ -35,11 +41,13 @@ build:
     - docker push $CONTAINER_TEST_IMAGE
   tags:
     - linux
+
 test1:
   stage: test
   services:
-    - mysql:latest
-  image: $CONTAINER_TEST_IMAGE
+{% if cookiecutter.database_type == "mysql" %}    - mysql:latest
+{% elif cookiecutter.database_type == "postgres" %}     - postgres:latest
+{% endif %}  image: $CONTAINER_TEST_IMAGE
   script:
     - ./entrypoint.sh test
   tags:
@@ -65,8 +73,8 @@ release-image:
     - linux
 
 pages:
+  stage: release-image
   script:
-    stage: release-image
     - rm -rf public/coverage
     - mv coverage/ public/
   artifacts:

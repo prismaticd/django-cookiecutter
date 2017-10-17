@@ -1,4 +1,4 @@
 -r base.txt
-PyMySQL
+{% if cookiecutter.database_type == "mysql" %}PyMySQL{% endif %}
 django-debug-toolbar
 django-extensions

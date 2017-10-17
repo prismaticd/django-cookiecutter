@@ -5,6 +5,7 @@ from .base_settings import *
 DEBUG = False
 MAIN_URL = '{{cookiecutter.prod_host}}'
 
+{% if cookiecutter.database_type == "mysql" %}
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -15,6 +16,19 @@ DATABASES = {
         'PORT': os.environ.get("DB_PORT "),
     }
 }
+{% elif cookiecutter.database_type == "postgres" %}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("DB_NAME"),
+        'USER': os.environ.get("DB_USER"),
+        'PASSWORD': os.environ.get("DB_PASSWORD"),
+        'HOST': os.environ.get("DB_HOST"),
+        'PORT': os.environ.get("DB_PORT "),
+    }
+}
+{% endif %}
+
 
 
 TEMPLATES = [

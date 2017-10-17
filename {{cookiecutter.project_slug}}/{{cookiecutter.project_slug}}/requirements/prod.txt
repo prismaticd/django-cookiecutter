@@ -1,4 +1,8 @@
 -r base.txt
+{% if cookiecutter.database_type == "mysql" %}
 mysqlclient
+{% elif cookiecutter.database_type == "postgres" %}
+psycopg2
+{% endif %}
 newrelic
 uwsgi

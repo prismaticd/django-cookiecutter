@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'django_rq',
     'rq_scheduler',
     'django_redis',
-    { % endif %}
+    {% endif %}
     {% if cookiecutter.install_wagtail == "y" %}
     'wagtail.wagtailforms',
     'wagtail.wagtailredirects',
@@ -214,4 +214,5 @@ STATIC_LOGGING = {
     "env": os.environ.get("DJANGO_SETTINGS_MODULE", "").split(".")[-1]
 }
 {% if cookiecutter.install_wagtail == "y" %}
-WAGTAIL_SITE_NAME = '{{cookiecutter.project_name}}'{% endif %}
+WAGTAIL_SITE_NAME = '{{cookiecutter.project_slug}}'
+{% endif %}
