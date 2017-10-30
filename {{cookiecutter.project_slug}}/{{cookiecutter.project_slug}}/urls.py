@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^documents/', include(wagtaildocs_urls)),{% endif %}
 ]
 
-if settings.DEBUG:
+if settings.DEBUG:  # pragma: no cover
     import debug_toolbar
     from django.conf.urls.static import static
 

@@ -31,6 +31,7 @@ else
     service nginx start
     pip install -r {{cookiecutter.project_slug}}/requirements/test.txt
     python manage.py migrate
+    rm -rf ./.static/
     python manage.py collectstatic --noinput --clear
     coverage run --source='{{cookiecutter.project_slug}}/' manage.py test
     rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi

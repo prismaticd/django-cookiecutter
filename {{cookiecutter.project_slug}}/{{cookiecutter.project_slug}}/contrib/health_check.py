@@ -6,7 +6,7 @@ def health_check(request):
     a = User.objects.first()
     if a:
         db = "ok"
-    else:
+    else:  # pragma: no cover
         db = "ko"
 
-    return JsonResponse({"db":db})
+    return JsonResponse({"db": db})

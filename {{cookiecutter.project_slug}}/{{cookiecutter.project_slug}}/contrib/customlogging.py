@@ -1,9 +1,9 @@
-from moneyfit.contrib.request import GLOBALS
+from .request import GLOBALS
 from django.conf import settings
 import logging
 
 
-class GrayFilter(logging.Filter):
+class GrayFilter(logging.Filter):  # pragma: no cover
     def filter(self, record):
         if hasattr(GLOBALS, "user") and GLOBALS.user:
             record.user_id = GLOBALS.user.id
