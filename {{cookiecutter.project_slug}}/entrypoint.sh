@@ -13,6 +13,7 @@ fi
 #  rm /tmp/env_config
 #}
 
+
 if [[ $# -eq 0 ]]; then
   #inject_env
     exit 0
