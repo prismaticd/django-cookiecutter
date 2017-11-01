@@ -24,7 +24,13 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'django.contrib.sites',
     'django.contrib.humanize',
-
+{% if cookiecutter.install_allauth == "y" %}
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+{% endif %}
     '{{cookiecutter.project_slug}}.apps.home',
 
 
@@ -87,7 +93,15 @@ TEMPLATES = [
     },
 ]
 
+{% if cookiecutter.install_allauth == "y" %}
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
 
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+{% endif %}
 WSGI_APPLICATION = '{{cookiecutter.project_slug}}.wsgi.application'
 
 

@@ -18,6 +18,8 @@ urlpatterns = [
     {% if cookiecutter.install_wagtail == "y" %}
     url(r'^cms/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),{% endif %}
+{% if cookiecutter.install_allauth == "y" %}
+    url(r'^accounts/', include('allauth.urls')),{% endif %}
 ]
 
 if settings.DEBUG:  # pragma: no cover
