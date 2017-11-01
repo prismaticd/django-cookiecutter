@@ -101,6 +101,13 @@ AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
+# DJANGO ALLAUTH CONFIG: http://django-allauth.readthedocs.io/en/stable/configuration.html
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_USERNAME_REQUIRED = False
 {% endif %}
 WSGI_APPLICATION = '{{cookiecutter.project_slug}}.wsgi.application'
 
