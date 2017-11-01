@@ -80,3 +80,15 @@ class Command(BaseCommand):
             current_home_page = new_home_page
 
 {% endif %}
+
+        {%if cookiecutter.install_allauth == "y" %}
+        from allauth.socialaccount.models import SocialApp
+        if len(SocialApp.objects.all()) == 0:
+            print("No Social Apps creating defaults")
+            facebook = SocialApp(provider='facebook', name='Facebook Oauth', client_id='changeme', secret='changeme')
+            facebook.save()
+            facebook.sites.add(1)
+            google = SocialApp(provider='google', name='Google Oauth', client_id='changeme', secret='changeme')
+            google.save()
+            google.sites.add(1)
+        {% endif %}
