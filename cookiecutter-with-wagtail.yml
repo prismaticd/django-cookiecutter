@@ -1,0 +1,5 @@
+default_context:
+  "database_type": "postgres",
+  "install_wagtail": "y",
+  "install_rq": "y",
+  "install_graypy_logging": "y"
