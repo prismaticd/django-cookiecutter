@@ -59,7 +59,8 @@ class Command(BaseCommand):
 {% endif %}
 
     def handle(self, *args, **options):
-        nb_objects = options['nb_objects']
+        { % if cookiecutter.install_wagtail == "y" %}
+        nb_objects = options['nb_objects']{% endif %}
 
         super_user = User.objects.filter(is_superuser=1).first()
         if not super_user:
