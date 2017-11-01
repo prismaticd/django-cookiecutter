@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 rm -rf ./tmp/
-cookiecutter --no_input --output_dir="./tmp/" .
+cookiecutter --no-input --output-dir="./tmp/" .
 cd tmp
 cd project_name
 chmod +x manage.py
@@ -12,7 +12,7 @@ pip install -r requirements_dev.txt --upgrade
 ./manage.py test
 
 rm -rf ./tmp/
-cookiecutter --no_input --output_dir="./tmp/" --config-file=cookiecutter-with-wagtail.yml .
+cookiecutter --no-input --output-dir="./tmp/" --config-file=cookiecutter-with-wagtail.yml .
 cd tmp
 cd project_name
 chmod +x manage.py
