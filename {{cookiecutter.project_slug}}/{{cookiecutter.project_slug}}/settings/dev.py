@@ -12,9 +12,7 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 # INSTALLED_APPS.remove('debug_toolbar')
 # MIDDLEWARE.remove('debug_toolbar.middleware.DebugToolbarMiddleware')
 INSTALLED_APPS += ['debug_toolbar', 'django_extensions',]
-MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-] + MIDDLEWARE
+MIDDLEWARE[:0] = ['debug_toolbar.middleware.DebugToolbarMiddleware',]
 
 INTERNAL_IPS = ['127.0.0.1', 'localhost']
 {% if cookiecutter.install_rq == "y" %}

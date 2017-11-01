@@ -3,7 +3,7 @@ from django.core.cache.backends.dummy import DummyCache
 
 
 class FakeRedisCache(DummyCache):  # pragma: no cover
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         DummyCache.__init__(self, *args, **kwargs)
         self.setex = None
         self.lrem = None
@@ -12,7 +12,7 @@ class FakeRedisCache(DummyCache):  # pragma: no cover
         self.ttl = None
 
     @property
-    def client(self, *args, **kwargs):
+    def client(self):
         return self
 
     def close(self, **kwargs):

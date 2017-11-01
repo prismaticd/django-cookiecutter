@@ -1,0 +1,12 @@
+# Config file for automatic testing at travis-ci.org
+
+sudo: false
+language: python
+python:
+    - 3.6
+
+install:
+  - pip install -r requirements_dev.txt
+
+script:
+    - python tests.py

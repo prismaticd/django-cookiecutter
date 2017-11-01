@@ -11,7 +11,7 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 DEBUG = False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  #  type: List[str]
 
 # Application definition
 INSTALLED_APPS = [
@@ -204,7 +204,8 @@ CACHES = {
 
 RQ_QUEUES = {
     'default': {
-        'USE_REDIS_CACHE': 'default'
+        'USE_REDIS_CACHE': 'default',
+        'ASYNC': True
      },
 }
 RQ_SHOW_ADMIN_LINK = True

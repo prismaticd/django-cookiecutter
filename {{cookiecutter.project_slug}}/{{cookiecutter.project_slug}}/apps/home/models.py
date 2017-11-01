@@ -3,7 +3,7 @@
 from .apps import HomeConfig
 {% if cookiecutter.install_wagtail == "y" %}
 from django.db import models
-
+from typing import List
 from wagtail.wagtailcore import blocks
 
 from wagtail.wagtailcore.models import Page, Orderable
@@ -12,8 +12,8 @@ from wagtail.wagtailadmin.edit_handlers import FieldPanel, InlinePanel, StreamFi
 from wagtail.wagtailimages.blocks import ImageChooserBlock
 
 class HomePage(Page):
-    parent_page_types = []
-    subpage_types = []
+    parent_page_types = []  # type: List[str]
+    subpage_types = []  # type: List[str]
 
     body = StreamField([
         ('heading', blocks.CharBlock(classname="full title")),
