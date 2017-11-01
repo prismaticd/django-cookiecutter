@@ -20,6 +20,8 @@ urlpatterns = [
     url(r'^documents/', include(wagtaildocs_urls)),{% endif %}
 {% if cookiecutter.install_allauth == "y" %}
     url(r'^accounts/', include('allauth.urls')),{% endif %}
+{% if cookiecutter.install_rq == "y" %}
+    url(r'^django-rq/', include('django_rq.urls')),{% endif %}
 ]
 
 if settings.DEBUG:  # pragma: no cover
