@@ -59,13 +59,13 @@ class Command(BaseCommand):
 {% endif %}
 
     def handle(self, *args, **options):
-        { % if cookiecutter.install_wagtail == "y" %}
+        {%if cookiecutter.install_wagtail == "y" %}
         nb_objects = options['nb_objects']{% endif %}
 
         super_user = User.objects.filter(is_superuser=1).first()
         if not super_user:
             User.objects.create_superuser(username='admin', password='adminadmin', email='')
-{% if cookiecutter.install_wagtail == "y" %}
+{%if cookiecutter.install_wagtail == "y" %}
         root_page = Page.objects.get(slug='root')
 
         main_site = Site.objects.get(is_default_site=1)
