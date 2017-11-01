@@ -13,7 +13,7 @@ pip install -r requirements_dev.txt --upgrade
 ./manage.py init_data
 ./manage.py test
 
-cd cwd
+cd $cwd
 rm -rf ./tmp/
 cookiecutter --no-input --output-dir="./tmp/" --config-file=cookiecutter-with-wagtail.yml .
 cd tmp
