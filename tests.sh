@@ -2,6 +2,7 @@
 
 python tests.py
 cd tmp
+chmod +x manage.py
 echo "SECRET_KEY = 'secretkeytest'" > project_name/settings/local.py
 pip install -r requirements_dev.txt --upgrade
 ./manage.py migrate
