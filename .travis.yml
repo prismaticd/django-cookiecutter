@@ -9,6 +9,6 @@ install:
   - pip install -r requirements.txt
 
 script:
-    - chmod +x test.sh
+    - chmod +x tests.sh
     - ./tests.sh
 

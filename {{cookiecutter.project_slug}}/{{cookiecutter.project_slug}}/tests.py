@@ -4,9 +4,9 @@ import json
 
 
 class {{ cookiecutter.project_name|replace(" ", "") }}Test(TestCase):
-    # @classmethod
-    # def setUpTestData(cls):
-    #     call_command('init_data')
+    @classmethod
+    def setUpTestData(cls):
+        call_command('init_data')
 
     def test_health(self):
         res = self.client.get('/healthcheck/')
