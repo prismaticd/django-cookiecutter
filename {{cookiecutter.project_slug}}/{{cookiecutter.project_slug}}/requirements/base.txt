@@ -12,3 +12,4 @@ boto3
 django-redis
 rq_scheduler{% endif %}
 {% if cookiecutter.install_graypy_logging == "y" %}graypy{% endif %}
+{% if cookiecutter.install_allauth == "y" %}django-allauth{% endif %}
