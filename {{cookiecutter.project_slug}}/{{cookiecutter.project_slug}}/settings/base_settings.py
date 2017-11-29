@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'django.contrib.sites',
     'django.contrib.humanize',
-{% if cookiecutter.install_allauth == "y" %}
+{% if cookiecutter.install_allauth %}
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -35,12 +35,12 @@ INSTALLED_APPS = [
 
 
     'import_export',
-    {% if cookiecutter.install_rq == "y" %}
+    {% if cookiecutter.install_rq %}
     'django_rq',
     'rq_scheduler',
     'django_redis',
     {% endif %}
-    {% if cookiecutter.install_wagtail == "y" %}
+    {% if cookiecutter.install_wagtail %}
     'wagtail.wagtailforms',
     'wagtail.wagtailredirects',
     'wagtail.wagtailembeds',
@@ -68,7 +68,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     '{{cookiecutter.project_slug}}.contrib.request.global_middleware',
-    {% if cookiecutter.install_wagtail == "y" %}
+    {% if cookiecutter.install_wagtail %}
     'wagtail.wagtailcore.middleware.SiteMiddleware',
     'wagtail.wagtailredirects.middleware.RedirectMiddleware',{% endif %}
 
@@ -93,7 +93,7 @@ TEMPLATES = [
     },
 ]
 
-{% if cookiecutter.install_allauth == "y" %}
+{% if cookiecutter.install_allauth %}
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
@@ -211,7 +211,7 @@ MEDIA_SECRET = 'change_me_in_prod'
 # http://zachsnow.com/#!/blog/2016/multiline-template-tags-django/
 base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)
 
-{% if cookiecutter.install_rq == "y" %}
+{% if cookiecutter.install_rq %}
 CACHES = {
     'default': {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -234,6 +234,6 @@ RQ_SHOW_ADMIN_LINK = True
 STATIC_LOGGING = {
     "env": os.environ.get("DJANGO_SETTINGS_MODULE", "").split(".")[-1]
 }
-{% if cookiecutter.install_wagtail == "y" %}
+{% if cookiecutter.install_wagtail %}
 WAGTAIL_SITE_NAME = '{{cookiecutter.project_slug}}'
 {% endif %}
