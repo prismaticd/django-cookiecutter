@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+set -e
+set -u
+set -x
+set -o pipefail
+
 echo "Launching Entrypoint"
 if [[ ! -v DJANGO_SETTINGS_MODULE ]]; then
     export DJANGO_SETTINGS_MODULE="{{cookiecutter.project_slug}}.settings.prod"
@@ -12,7 +17,6 @@ fi
 #  export $(cat /tmp/env_config | grep -v ^# | grep '=' | xargs)
 #  rm /tmp/env_config
 #}
-
 
 if [[ $# -eq 0 ]]; then
   #inject_env
@@ -35,7 +39,6 @@ else
     rm -rf ./.static/
     python manage.py collectstatic --noinput --clear
     coverage run --source='{{cookiecutter.project_slug}}/' manage.py test
-    rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
     coverage report
     coverage html -d ./coverage
   elif  [[ $1 == manage* ]]; then
