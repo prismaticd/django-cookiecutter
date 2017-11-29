@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ["127.0.0.1"]
 
 SECRET_KEY = "TESTSECRETKEY"
 DEFAULT_FROM_EMAIL = "contact_test@{{cookiecutter.staging_host}}"
-{% if cookiecutter.install_rq == "y" %}
+{% if cookiecutter.install_rq %}
 CACHES = {
     'default': {
         'BACKEND': '{{cookiecutter.project_slug}}.contrib.fake_redis.FakeRedisCache',

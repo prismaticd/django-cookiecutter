@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .apps import HomeConfig
-{% if cookiecutter.install_wagtail == "y" %}
+{% if cookiecutter.install_wagtail %}
 from django.db import models
 from typing import List
 from wagtail.wagtailcore import blocks

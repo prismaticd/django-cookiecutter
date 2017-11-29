@@ -15,7 +15,7 @@ INSTALLED_APPS += ['debug_toolbar', 'django_extensions',]
 MIDDLEWARE[:0] = ['debug_toolbar.middleware.DebugToolbarMiddleware',]
 
 INTERNAL_IPS = ['127.0.0.1', 'localhost']
-{% if cookiecutter.install_rq == "y" %}
+{% if cookiecutter.install_rq %}
 CACHES = {
     'default': {
         'BACKEND': '{{cookiecutter.project_slug}}.contrib.fake_redis.FakeRedisCache',

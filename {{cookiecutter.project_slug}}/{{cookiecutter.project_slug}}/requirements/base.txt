@@ -1,6 +1,6 @@
 pip>9
 django>1.11,<2
-{% if cookiecutter.install_wagtail == "y" %}wagtail{% endif %}
+{% if cookiecutter.install_wagtail %}wagtail{% endif %}
 boto
 requests
 django-settings-export
@@ -8,8 +8,8 @@ django-settings-export
 django-import-export
 django-storages
 boto3
-{% if cookiecutter.install_rq == "y" %}django-rq
+{% if cookiecutter.install_rq %}django-rq
 django-redis
 rq_scheduler{% endif %}
-{% if cookiecutter.install_graypy_logging == "y" %}graypy{% endif %}
-{% if cookiecutter.install_allauth == "y" %}django-allauth{% endif %}
+{% if cookiecutter.install_graypy_logging %}graypy{% endif %}
+{% if cookiecutter.install_allauth %}django-allauth{% endif %}

@@ -6,14 +6,14 @@ from django.utils import lorem_ipsum
 import json, os, shutil
 from django.core.management import call_command
 
-{% if cookiecutter.install_wagtail == "y" %}
+{% if cookiecutter.install_wagtail %}
 from ...models import HomePage
 from wagtail.wagtailcore.models import Page, Site, ContentType
 
 {% endif %}
 random.seed(123456789)
 
-{% if cookiecutter.install_wagtail == "y" %}
+{% if cookiecutter.install_wagtail %}
 def generate_body(nb_iterations):
     return_array = []
 
@@ -27,7 +27,7 @@ def generate_body(nb_iterations):
 
 class Command(BaseCommand):
     help = 'Create the what is need to run the site'
-{%if cookiecutter.install_wagtail == "y" %}
+{% if cookiecutter.install_wagtail %}
     def add_arguments(self, parser):
         parser.add_argument('--nb_objects', default=50, type=int)
 
@@ -59,13 +59,13 @@ class Command(BaseCommand):
 {% endif %}
 
     def handle(self, *args, **options):
-        {%if cookiecutter.install_wagtail == "y" %}
+        {% if cookiecutter.install_wagtail %}
         nb_objects = options['nb_objects']{% endif %}
 
         super_user = User.objects.filter(is_superuser=1).first()
         if not super_user:
             User.objects.create_superuser(username='admin', password='adminadmin', email='')
-{%if cookiecutter.install_wagtail == "y" %}
+{% if cookiecutter.install_wagtail %}
         root_page = Page.objects.get(slug='root')
 
         main_site = Site.objects.get(is_default_site=1)
@@ -81,7 +81,7 @@ class Command(BaseCommand):
 
 {% endif %}
 
-        {%if cookiecutter.install_allauth == "y" %}
+        {% if cookiecutter.install_allauth %}
         from allauth.socialaccount.models import SocialApp
         if len(SocialApp.objects.all()) == 0:
             print("No Social Apps creating defaults")
