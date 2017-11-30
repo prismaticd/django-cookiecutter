@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from .base_settings import *
+from .base_settings import *  # noqa
+import os
 
 DEBUG = False
 MAIN_URL = '{{cookiecutter.staging_host}}'
@@ -61,4 +62,3 @@ MEDIA_SECRET = os.environ.get("MEDIA_SECRET_KEY")
 
 # Need absolute url for emails
 STATIC_URL = "https://{}/static/".format(MAIN_URL)
-

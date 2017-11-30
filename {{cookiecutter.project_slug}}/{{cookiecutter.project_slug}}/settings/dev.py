@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from .base_settings import *
-
+from .base_settings import *  # noqa
+from typing import List
 
 DEBUG = True
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
@@ -11,9 +11,14 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 # To disable add those 2 lines in local.py:
 # INSTALLED_APPS.remove('debug_toolbar')
 # MIDDLEWARE.remove('debug_toolbar.middleware.DebugToolbarMiddleware')
-INSTALLED_APPS += ['debug_toolbar', 'django_extensions',]
+INSTALLED_APPS += [
+    'debug_toolbar',
+    'django_extensions',
+]
+
 MIDDLEWARE[:0] = ['debug_toolbar.middleware.DebugToolbarMiddleware',]
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 INTERNAL_IPS = ['127.0.0.1', 'localhost']
 {% if cookiecutter.install_rq %}
 CACHES = {
@@ -28,7 +33,7 @@ for key in RQ_QUEUES:
 
 
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:  # pragma: no cover
     import random
     raise Exception("settings/local.py file is missing, create one with the line SECRET_KEY = '{}'".format(

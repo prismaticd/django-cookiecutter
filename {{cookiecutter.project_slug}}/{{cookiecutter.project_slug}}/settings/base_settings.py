@@ -72,7 +72,7 @@ MIDDLEWARE = [
     'wagtail.wagtailcore.middleware.SiteMiddleware',
     'wagtail.wagtailredirects.middleware.RedirectMiddleware',{% endif %}
 
-]
+]  # List[str]
 
 ROOT_URLCONF = '{{cookiecutter.project_slug}}.urls'
 
@@ -93,6 +93,8 @@ TEMPLATES = [
     },
 ]
 
+WSGI_APPLICATION = '{{cookiecutter.project_slug}}.wsgi.application'
+
 {% if cookiecutter.install_allauth %}
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -101,15 +103,7 @@ AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 )
-
-# DJANGO ALLAUTH CONFIG: http://django-allauth.readthedocs.io/en/stable/configuration.html
-ACCOUNT_AUTHENTICATION_METHOD = "email"
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_USERNAME_REQUIRED = False
 {% endif %}
-WSGI_APPLICATION = '{{cookiecutter.project_slug}}.wsgi.application'
 
 
 # Database
@@ -236,4 +230,18 @@ STATIC_LOGGING = {
 }
 {% if cookiecutter.install_wagtail %}
 WAGTAIL_SITE_NAME = '{{cookiecutter.project_slug}}'
+{% endif %}
+
+{% if cookiecutter.install_allauth %}
+
+# DJANGO ALLAUTH CONFIG: http://django-allauth.readthedocs.io/en/stable/configuration.html
+ACCOUNT_USER_DISPLAY = "allauth.account.utils.user_email"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_USERNAME_REQUIRED = False
+
+LOGIN_URL = 'account_login'
+LOGIN_REDIRECT_URL = 'profile'
 {% endif %}

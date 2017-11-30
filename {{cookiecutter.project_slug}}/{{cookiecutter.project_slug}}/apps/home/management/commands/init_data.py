@@ -1,16 +1,26 @@
-from django.core.management.base import BaseCommand, CommandError
-from django.contrib.auth.models import User
-from django.conf import settings
+import json
+import os
 import random
+
+{% if cookiecutter.install_allauth -%}
+from allauth.socialaccount.models import SocialApp
+{%- endif %}
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.files import File
+from django.core.files.images import ImageFile
+from django.core.management.base import BaseCommand
+from django.contrib.sites.models import Site as DjangoSite
 from django.utils import lorem_ipsum
-import json, os, shutil
-from django.core.management import call_command
+{% if cookiecutter.install_wagtail -%}
+from wagtail.wagtailcore.models import Page, Site as WagtailSite, ContentType
+from wagtail.wagtailimages.models import Image
+{%- endif %}
 
 {% if cookiecutter.install_wagtail %}
 from ...models import HomePage
-from wagtail.wagtailcore.models import Page, Site, ContentType
-
 {% endif %}
+
 random.seed(123456789)
 
 {% if cookiecutter.install_wagtail %}
@@ -59,18 +69,31 @@ class Command(BaseCommand):
 {% endif %}
 
     def handle(self, *args, **options):
-        {% if cookiecutter.install_wagtail %}
-        nb_objects = options['nb_objects']{% endif %}
+{%- if cookiecutter.install_wagtail %}
+        nb_objects = options['nb_objects']
+{%- endif %}
+
+        site = DjangoSite.objects.get(id=settings.SITE_ID)
+        site.domain = "{{ cookiecutter.prod_host }}"
+        site.name = "{{ cookiecutter.project_name }}"
+        site.save()
 
         super_user = User.objects.filter(is_superuser=1).first()
         if not super_user:
+            print("No Super user creating default admin")
             User.objects.create_superuser(username='admin', password='adminadmin', email='')
 {% if cookiecutter.install_wagtail %}
         root_page = Page.objects.get(slug='root')
 
-        main_site = Site.objects.get(is_default_site=1)
+        main_site = WagtailSite.objects.get(is_default_site=1)
+
+        main_site.hostname = site.domain
+        main_site.site_name = site.name
+        main_site.save()
+
         current_home_page = main_site.root_page
         if current_home_page.content_type_id == 1:
+            print("No Homepage, creating default")
             new_home_page = HomePage(slug='{{cookiecutter.project_slug}}-home', title='{{cookiecutter.project_name}} HomePage')
             root_page.add_child(instance=new_home_page)
             new_home_page.save_revision().publish()
@@ -78,17 +101,21 @@ class Command(BaseCommand):
             main_site.save()
             current_home_page.delete()
             current_home_page = new_home_page
-
 {% endif %}
 
-        {% if cookiecutter.install_allauth %}
-        from allauth.socialaccount.models import SocialApp
+{%- if cookiecutter.install_allauth %}
         if len(SocialApp.objects.all()) == 0:
-            print("No Social Apps creating defaults")
-            facebook = SocialApp(provider='facebook', name='Facebook Oauth', client_id='changeme', secret='changeme')
+            print("No Social Apps, creating defaults")
+            facebook = SocialApp(provider='facebook',
+                                 name='Facebook Oauth',
+                                 client_id=getattr(settings, 'INIT_AUTH_FACEBOOK_CLIENT_ID', 'changeme'),
+                                 secret=getattr(settings, 'INIT_AUTH_FACEBOOK_SECRET_KEY', 'changeme'))
             facebook.save()
             facebook.sites.add(1)
-            google = SocialApp(provider='google', name='Google Oauth', client_id='changeme', secret='changeme')
+            google = SocialApp(provider='google',
+                               name='Google Oauth',
+                               client_id=getattr(settings, 'INIT_AUTH_GOOGLE_CLIENT_ID', 'changeme'),
+                               secret=getattr(settings, 'INIT_AUTH_GOOGLE_SECRET_KEY', 'changeme'))
             google.save()
             google.sites.add(1)
-        {% endif %}
+{% endif %}

@@ -3,32 +3,73 @@
 
 # Dev install
 
-* git checkout git@gitlab.com:{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}.git
-* cd {{cookiecutter.gitlab_project_slug}}
-* pip install -r requirements_dev.txt --upgrade
-* create the {{cookiecutter.project_slug}}/settings/local.py with SECRET_KEY = 'randomstring'
-* ./manage.py migrate
-* ./manage.py init_data
+```
+git checkout git@gitlab.com:{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}.git
+cd {{cookiecutter.gitlab_project_slug}}
+pip install -r requirements_dev.txt --upgrade
+echo "SECRET_KEY = 'randomstring'" >> {{cookiecutter.project_slug}}/settings/local.py
+./manage.py migrate
+./manage.py init_data
+```
 
-# CSS/JS pipeline
+
+# Useful dev commands / config
+
+## CSS/JS pipeline
 
 * node 8.x required
 * npm install
 * gulp watch
 
-# Dev update
+## Dev update
 
-* git pull && pip install -r requirements_dev.txt --upgrade && npm update  && python manage.py migrate
+```
+git pull && pip install -r requirements_dev.txt --upgrade && npm update  && python manage.py migrate
+```
 
-
-# Onliner to check migrations
+## One-liner to reset (sqlite) dev database
 ```
 rm db.sqlite3 && python manage.py makemigrations && python manage.py migrate && python manage.py init_data
 ```
 
+## To run postgres in dev
 
+```
+docker run -p 5432:5432 postgres:latest
+```
 
-To run coverage locally
+Add something like this to your `settings/local.py`
+
+```
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("POSTGRES_DB", 'postgres'),
+        'USER': os.environ.get("POSTGRES_USER", 'postgres'),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", ''),
+        'HOST': os.environ.get("DB_HOST", '127.0.0.1'),
+        'PORT': os.environ.get("DB_PORT", '5432'),
+    }
+}
+```
+
+{% if cookiecutter.install_allauth %}
+## Social login in dev
+
+Get the OAuth clientid/secret for the relevant app and add the following to local.py before running `python manage.py init_data`
+(or add them in admin afterwards)
+
+```
+INIT_AUTH_FACEBOOK_CLIENT_ID = 'todo'
+INIT_AUTH_FACEBOOK_SECRET_KEY = 'todo'
+
+INIT_AUTH_GOOGLE_CLIENT_ID = 'todo'
+INIT_AUTH_GOOGLE_SECRET_KEY = 'todo'
+
+```
+{% endif %}
+
+## To run coverage locally
 
  ```
  pip install coverage
@@ -41,14 +82,12 @@ To run coverage locally
  ```
 
 
-
-
-#  To check static typing
+##  To check static typing
 ```
 mypy --ignore-missing-imports -p  {{cookiecutter.project_slug}}
 ```
 
-# To refresh the project from our cookiecutter template
+## To refresh the project from our cookiecutter template
 
 This assumes the project is checked out to the directory {{cookiecutter.project_slug}}.
 
