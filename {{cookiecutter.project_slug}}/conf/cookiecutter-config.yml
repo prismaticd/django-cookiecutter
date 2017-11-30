@@ -1,0 +1,6 @@
+default_context:
+{%- for key, value in cookiecutter.items() %}
+  {%- if not key.startswith('_') %}
+    {{ key }}: {{ value }}
+  {%- endif %}
+{%- endfor %}

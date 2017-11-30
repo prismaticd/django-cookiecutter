@@ -47,3 +47,13 @@ To run coverage locally
 ```
 mypy --ignore-missing-imports -p  {{cookiecutter.project_slug}}
 ```
+
+# To refresh the project from our cookiecutter template
+
+This assumes the project is checked out to the directory {{cookiecutter.project_slug}}.
+
+Beware, this will overwrite local files, check in or stash your changes before running.
+```
+pip install cookiecutter
+cookiecutter https://github.com/prismaticd/django-cookiecutter/ --overwrite-if-exists --output-dir .. conf/cookiecutter-config.yml --no-input
+```
