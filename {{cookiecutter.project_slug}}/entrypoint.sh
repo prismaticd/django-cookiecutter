@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
+# -e exit on non 0 return
 set -e
+# -u exit on undefined variables
 set -u
+# -x print command before running
 set -x
+# bubble up the non 0 on pipes
 set -o pipefail
 
 echo "Launching Entrypoint"
