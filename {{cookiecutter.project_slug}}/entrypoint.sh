@@ -49,6 +49,10 @@ else
     python manage.py collectstatic --noinput --clear
 
     coverage run --source='{{cookiecutter.project_slug}}/' manage.py test
+{%- if cookiecutter.install_behave_test == "y" %}
+    coverage run --source='{{cookiecutter.project_slug}}/' --append manage.py behave
+{%- endif %}
+
     coverage report
     coverage html -d ./coverage
   elif  [[ $1 == manage* ]]; then

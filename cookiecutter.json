@@ -8,8 +8,9 @@
 
   "database_type": ["mysql", "postgres"],
 
-  "install_wagtail": [false, true],
-  "install_allauth": [false, true],
-  "install_rq": [false, true],
-  "install_graypy_logging": [false, true]
+  "install_wagtail": ["n", "y"],
+  "install_allauth": ["n", "y"],
+  "install_rq": ["n", "y"],
+  "install_graypy_logging": ["n", "y"],
+  "install_behave_test": ["n", "y"]
 }

@@ -1,2 +1,6 @@
 -r base.txt
 coverage
+{%- if cookiecutter.install_behave_test == "y" %}
+behave
+behave-django
+{%- endif %}

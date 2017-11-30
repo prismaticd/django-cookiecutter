@@ -2,7 +2,7 @@ import json
 import os
 import random
 
-{% if cookiecutter.install_allauth -%}
+{% if cookiecutter.install_allauth == "y" -%}
 from allauth.socialaccount.models import SocialApp
 {%- endif %}
 from django.conf import settings
@@ -12,18 +12,18 @@ from django.core.files.images import ImageFile
 from django.core.management.base import BaseCommand
 from django.contrib.sites.models import Site as DjangoSite
 from django.utils import lorem_ipsum
-{% if cookiecutter.install_wagtail -%}
+{% if cookiecutter.install_wagtail == "y" -%}
 from wagtail.wagtailcore.models import Page, Site as WagtailSite, ContentType
 from wagtail.wagtailimages.models import Image
 {%- endif %}
 
-{% if cookiecutter.install_wagtail %}
+{% if cookiecutter.install_wagtail == "y" %}
 from ...models import HomePage
 {% endif %}
 
 random.seed(123456789)
 
-{% if cookiecutter.install_wagtail %}
+{% if cookiecutter.install_wagtail == "y" %}
 def generate_body(nb_iterations):
     return_array = []
 
@@ -37,7 +37,7 @@ def generate_body(nb_iterations):
 
 class Command(BaseCommand):
     help = 'Create the what is need to run the site'
-{% if cookiecutter.install_wagtail %}
+{% if cookiecutter.install_wagtail == "y" %}
     def add_arguments(self, parser):
         parser.add_argument('--nb_objects', default=50, type=int)
 
@@ -69,7 +69,7 @@ class Command(BaseCommand):
 {% endif %}
 
     def handle(self, *args, **options):
-{%- if cookiecutter.install_wagtail %}
+{%- if cookiecutter.install_wagtail == "y" %}
         nb_objects = options['nb_objects']
 {%- endif %}
 
@@ -82,7 +82,7 @@ class Command(BaseCommand):
         if not super_user:
             print("No Super user creating default admin")
             User.objects.create_superuser(username='admin', password='adminadmin', email='')
-{% if cookiecutter.install_wagtail %}
+{% if cookiecutter.install_wagtail == "y" %}
         root_page = Page.objects.get(slug='root')
 
         main_site = WagtailSite.objects.get(is_default_site=1)
@@ -103,7 +103,7 @@ class Command(BaseCommand):
             current_home_page = new_home_page
 {% endif %}
 
-{%- if cookiecutter.install_allauth %}
+{%- if cookiecutter.install_allauth == "y" %}
         if len(SocialApp.objects.all()) == 0:
             print("No Social Apps, creating defaults")
             facebook = SocialApp(provider='facebook',

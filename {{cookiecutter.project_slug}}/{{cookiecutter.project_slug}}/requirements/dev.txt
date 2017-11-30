@@ -1,4 +1,10 @@
 -r base.txt
-{% if cookiecutter.database_type == "mysql" %}PyMySQL{% endif %}
+{%- if cookiecutter.database_type == "mysql" %}
+PyMySQL
+{%- endif %}
 django-debug-toolbar
 django-extensions
+{%- if cookiecutter.install_behave_test == "y" %}
+behave
+behave-django
+{%- endif %}

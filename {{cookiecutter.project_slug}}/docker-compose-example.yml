@@ -14,7 +14,7 @@ services:
       interval: 1m
       timeout: 10s
       retries: 3
-      {% if cookiecutter.install_rq %}
+      {% if cookiecutter.install_rq == "y" %}
   worker:
     build: .
     command: manage rqworker default

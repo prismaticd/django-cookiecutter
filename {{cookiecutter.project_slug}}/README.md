@@ -53,7 +53,7 @@ DATABASES = {
 }
 ```
 
-{% if cookiecutter.install_allauth %}
+{% if cookiecutter.install_allauth == "y" %}
 ## Social login in dev
 
 Get the OAuth clientid/secret for the relevant app and add the following to local.py before running `python manage.py init_data`
@@ -94,5 +94,5 @@ This assumes the project is checked out to the directory {{cookiecutter.project_
 Beware, this will overwrite local files, check in or stash your changes before running.
 ```
 pip install cookiecutter
-cookiecutter https://github.com/prismaticd/django-cookiecutter/ --overwrite-if-exists --output-dir .. conf/cookiecutter-config.yml --no-input
+cookiecutter https://github.com/prismaticd/django-cookiecutter/ --config-file conf/cookiecutter-config.yml --output-dir .. --overwrite-if-exists  --no-input
 ```

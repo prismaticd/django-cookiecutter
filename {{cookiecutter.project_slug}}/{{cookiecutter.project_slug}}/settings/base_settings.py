@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.admindocs',
     'django.contrib.sites',
     'django.contrib.humanize',
-{% if cookiecutter.install_allauth %}
+{% if cookiecutter.install_allauth == "y" %}
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -35,12 +35,12 @@ INSTALLED_APPS = [
 
 
     'import_export',
-    {% if cookiecutter.install_rq %}
+{% if cookiecutter.install_rq == "y" %}
     'django_rq',
     'rq_scheduler',
     'django_redis',
-    {% endif %}
-    {% if cookiecutter.install_wagtail %}
+{% endif %}
+{% if cookiecutter.install_wagtail == "y" %}
     'wagtail.wagtailforms',
     'wagtail.wagtailredirects',
     'wagtail.wagtailembeds',
@@ -55,7 +55,7 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
-    {% endif %}
+{% endif %}
 ]
 
 MIDDLEWARE = [
@@ -68,10 +68,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     '{{cookiecutter.project_slug}}.contrib.request.global_middleware',
-    {% if cookiecutter.install_wagtail %}
+{% if cookiecutter.install_wagtail == "y" %}
     'wagtail.wagtailcore.middleware.SiteMiddleware',
-    'wagtail.wagtailredirects.middleware.RedirectMiddleware',{% endif %}
-
+    'wagtail.wagtailredirects.middleware.RedirectMiddleware',
+{% endif %}
 ]  # List[str]
 
 ROOT_URLCONF = '{{cookiecutter.project_slug}}.urls'
@@ -95,7 +95,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = '{{cookiecutter.project_slug}}.wsgi.application'
 
-{% if cookiecutter.install_allauth %}
+{% if cookiecutter.install_allauth == "y" %}
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
@@ -205,7 +205,7 @@ MEDIA_SECRET = 'change_me_in_prod'
 # http://zachsnow.com/#!/blog/2016/multiline-template-tags-django/
 base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)
 
-{% if cookiecutter.install_rq %}
+{% if cookiecutter.install_rq == "y" %}
 CACHES = {
     'default': {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -228,11 +228,11 @@ RQ_SHOW_ADMIN_LINK = True
 STATIC_LOGGING = {
     "env": os.environ.get("DJANGO_SETTINGS_MODULE", "").split(".")[-1]
 }
-{% if cookiecutter.install_wagtail %}
+{% if cookiecutter.install_wagtail == "y" %}
 WAGTAIL_SITE_NAME = '{{cookiecutter.project_slug}}'
 {% endif %}
 
-{% if cookiecutter.install_allauth %}
+{% if cookiecutter.install_allauth == "y" %}
 
 # DJANGO ALLAUTH CONFIG: http://django-allauth.readthedocs.io/en/stable/configuration.html
 ACCOUNT_USER_DISPLAY = "allauth.account.utils.user_email"
