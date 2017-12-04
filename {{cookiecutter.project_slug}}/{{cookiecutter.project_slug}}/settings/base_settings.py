@@ -41,6 +41,10 @@ INSTALLED_APPS = [
 {% endif %}
     '{{cookiecutter.project_slug}}.apps.home.apps.HomeConfig',
 
+{%- if cookiecutter.install_allauth == "y" %}
+    '{{cookiecutter.project_slug}}.apps.myauth',
+{%- endif %}
+
     'import_export',
 {%- if cookiecutter.install_rq == "y" %}
 

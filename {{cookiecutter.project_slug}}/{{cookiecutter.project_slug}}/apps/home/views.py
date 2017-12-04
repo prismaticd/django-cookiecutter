@@ -8,4 +8,4 @@ logger = logging.getLogger(__name__)
 
 
 class HomePageView(TemplateView):
-    template_name = "home/home.html"
+    template_name = "home/home_page.html"

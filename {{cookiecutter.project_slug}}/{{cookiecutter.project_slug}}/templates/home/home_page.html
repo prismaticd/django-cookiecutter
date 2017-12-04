@@ -1,50 +1,39 @@
-{% raw %}{% extends 'base.html' %}
+{% raw -%}
+{% extends 'base.html' %}
 {% load static %}
+{% block content_wrapper %}{% endblock %}
 
-{% block content %}
-<p class="has-text-centered">This is the home page</p>
-
-    <div class="columns has-text-centered">
-     <div class="column">asddsasda</div>
-     <div class="column">asddsasda</div>
-     <div class="column">asddsasda</div>
-    </div>
-
-
-    <section class="hero is-fullheight is-primary">
-  <div class="hero-head">
-    <div class="container">
-      <div class="tabs is-centered">
-        <ul>
-          <li><a>This is always at the top</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
+{% block content_full_width %}
+<div class="hero is-primary is-bold homepage-is-generic">
   <div class="hero-body">
-    <div class="container has-text-centered">
-      <h3 class="title is-2">
-        <a href="http://bulma.io/documentation/layout/hero/">
-          <span class="icon is-medium">
-            <i class="fa fa-arrows-v"></i>
-          </span>
-          Easy <strong>vertical centering</strong> in <strong>fullscreen</strong>
-        </a>
-      </h3>
-      <h4 class="subtitle is-4">Include any content you want, it's always centered</h4>
-    </div>
-  </div>
-
-  <div class="hero-foot">
     <div class="container">
-      <div class="tabs is-centered">
-        <ul>
-          <li><a>And this at the bottom</a></li>
-        </ul>
+      <div class="columns is-centered">
+        <div class="column is-8 content">
+          <div class="columns">
+            <div class="column is-6 hero-content--left">
+              <h1 class="title is-2 is-spaced">
+                Hi There, Welcome to {% endraw %}{{ cookiecutter.project_name }}{% raw %}
+              </h1>
+
+              <p class="subtitle is-6">
+                {% lorem %}
+              </p>
+
+              <a class="button is-medium is-link">
+                Learn more
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</section>
-
-{% endblock %}{% endraw %}
+  <hr>
+  <div class="hero-foot">
+    <p class="has-text-centered margin-top--xs margin-bottom--xxxl margin-l-r--xxxl">
+      {% lorem %}
+    </p>
+  </div>
+</div>
+{% endblock %}
+{% endraw %}

@@ -38,5 +38,5 @@ try:
     from .local import *  # noqa
 except ImportError:  # pragma: no cover
     import random
-    raise Exception("settings/local.py file is missing, create one with the line SECRET_KEY = '{}'".format(
+    raise Exception("{{cookiecutter.project_slug}}/settings/local.py file is missing, create one with the line SECRET_KEY = '{}'".format(
         ''.join((random.choice("abcdefghijklmnopqrstuvwxyz")) for x in range(48))))

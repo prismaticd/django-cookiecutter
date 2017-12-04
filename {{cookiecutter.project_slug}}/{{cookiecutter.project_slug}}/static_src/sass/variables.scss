@@ -1,0 +1,67 @@
+// font-size variables (bulma also has classes from 1-7 in the format is-size-$variable but they are x0.5 or x0.25 in size)
+$smallest-rem: 0.25rem;
+$xxxs: 0.5rem;
+$xxs: 0.75rem;
+$xs: 0.9rem;
+$s: 1.1rem;
+$m: 1.3rem;
+$l: 1.5rem;
+$xl: 1.7rem;
+$xxl: 1.9rem;
+$xxxl: 2.1rem;
+$biggest-rem: 3.5rem;
+
+$sizes: ($smallest-rem smallest-rem,$xxxs xxxs, $xxs xxs, $xs xs, $s s, $m m, $l l, $xl xl, $xxl xxl, $xxxl xxxl, $biggest-rem biggest-rem);
+
+// Padding / Margin variables for top, right, bottom, left
+$top-smallest: $smallest-rem top smallest-rem;
+$top-xxxs: $xxxs top xxxs;
+$top-xxs: $xxs top xxs;
+$top-xs: $xs top xs;
+$top-s: $s top s;
+$top-m: $m top m;
+$top-l: $l top l;
+$top-xl: $xl top xl;
+$top-xxl: $xxl top xxl;
+$top-xxxl: $xxxl top xxxl;
+
+$right-smallest: $smallest-rem right smallest-rem;
+$right-xxxs: $xxxs right xxxs;
+$right-xxs: $xxs right xxs;
+$right-xs: $xs right xs;
+$right-s: $s right s;
+$right-m: $m right m;
+$right-l: $l right l;
+$right-xl: $xl right xl;
+$right-xxl: $xxl right xxl;
+$right-xxxl: $xxxl right xxxl;
+
+$bottom-smallest: $smallest-rem bottom smallest-rem;
+$bottom-xxxs: $xxxs bottom xxxs;
+$bottom-xxs: $xxs bottom xxs;
+$bottom-xs: $xs bottom xs;
+$bottom-s: $s bottom s;
+$bottom-m: $m bottom m;
+$bottom-l: $l bottom l;
+$bottom-xl: $xl bottom xl;
+$bottom-xxl: $xxl bottom xxl;
+$bottom-xxxl: $xxxl bottom xxxl;
+
+$left-smallest: $smallest-rem left smallest-rem;
+$left-xxxs: $xxxs left xxxs;
+$left-xxs: $xxs left xxs;
+$left-xs: $xs left xs;
+$left-s: $s left s;
+$left-m: $m left m;
+$left-l: $l left l;
+$left-xl: $xl left xl;
+$left-xxl: $xxl left xxl;
+$left-xxxl: $xxxl left xxxl;
+
+// Padding / Margin MIXIN variables for top, right, bottom, left
+$default-space-top: ($top-smallest, $top-xxxs, $top-xxs, $top-xs, $top-s, $top-m, $top-l, $top-xl, $top-xxl, $top-xxxl);
+$space-right: ($right-smallest,$right-xxxs, $right-xxs, $right-xs, $right-s, $right-m, $right-l, $right-xl, $right-xxl, $right-xxxl);
+$space-bottom: ($bottom-smallest, $bottom-xxxs, $bottom-xxs, $bottom-xs, $bottom-s, $bottom-m, $bottom-l, $bottom-xl, $bottom-xxl, $bottom-xxxl);
+$space-left: ($left-smallest, $left-xxxs, $left-xxs, $left-xs, $left-s, $left-m, $left-l, $left-xl, $left-xxl, $left-xxxl);
+
+$is-transparent: rgba(0,0,0,0);

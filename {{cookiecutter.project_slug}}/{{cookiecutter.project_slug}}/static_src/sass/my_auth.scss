@@ -1,0 +1,17 @@
+.facebook-color {
+  background-color: #3b5998 !important;
+}
+
+.google-color {
+   background-color: #dd4b39 !important;
+}
+
+.auth-templates.form.message{
+  background-color: $is-transparent;
+}
+
+.login-template{
+  .message{
+    margin-bottom: $xxxl+1.5;
+  }
+}

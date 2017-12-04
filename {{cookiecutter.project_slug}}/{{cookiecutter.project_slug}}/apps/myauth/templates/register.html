@@ -1,0 +1,127 @@
+{% raw -%}
+{% extends 'base.html' %}
+{% load socialaccount %}
+{% load myfilters %}
+{% load static %}
+{% block head_title %}Register{% endblock %}
+
+{% block content %}
+<div class="columns is-centered">
+  <div class="column is-half ">
+    <div class="header">
+      <h1 class="title is-3 has-text-centered">Register</h1>
+
+      <p class="subtitle is-6 has-text-centered margin-bottom--s">
+        Please sign in with one of your existing third party accounts. Or,
+        if you're already a member <a href="{% url 'account_login' %}">Log in</a>.
+      </p>
+    </div>
+
+    {% if form.email.errors or form.password1.errors or form.password2.errors  %}
+      <div class="message is-danger margin-top--xxxl">
+        <div class="message-header"></div>
+        <div class="message-body has-text-centered">
+          Either your Email or Passwords are incorrect please try again.
+        </div>
+      </div>
+    {% endif %}
+
+    <form id="login_form" method="post" action="{% url 'account_signup' %}" novalidate>
+      {% csrf_token %}
+
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <div class="field">
+            <a class="button facebook-color has-text-white is-fullwidth" href="{% provider_login_url "facebook" %}">
+              <span class="icon"><i class="fa fa-facebook-official "></i></span>
+              <span>Facebook</span>
+            </a>
+          </div>
+
+          <div class="field">
+            <a class="button is-fullwidth has-text-white google-color" href="{% provider_login_url "google" %}">
+              <span class="icon"><i class="fa fa-google-plus "></i></span>
+              <span>Google</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-half is-centered">
+        <div class="column is-10 has-text-centered">
+          <p>
+            {{ form.non_field_errors }}
+          </p>
+
+          <div class="field {% if form.email.errors %}no-margins{% endif %}">
+           <p class="control has-icons-left">
+            {{ form.email|addclass:'input is-medium'  }}
+             <span class="icon is-small is-left">
+                <i class="fa fa-asterisk font-size--xxxs has-text-danger"></i>
+              </span>
+            </p>
+          </div>
+
+          {% if form.email.errors %}
+            <p class="has-text-centered margin-top--smallest-rem margin-bottom--xs has-text-danger font-size--xxs">
+              {{ form.email.errors|striptags }}
+            </p>
+          {% endif %}
+
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <div class="field">
+                <p class="control has-icons-left">
+                  {{ form.password1|addclass:'input is-medium' }}
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-asterisk font-size--xxxs has-text-danger"></i>
+                  </span>
+                </p>
+
+                {% if form.password1.errors %}
+                  <p class="has-text-centered margin-top--smallest-rem margin-bottom--xs has-text-danger font-size--xxs">
+                    {{ form.password1.errors|striptags }}
+                  </p>
+                {% endif %}
+              </div>
+
+
+              <div class="field">
+                <p class="control has-icons-left">
+                  {{ form.password2|addclass:'input is-medium' }}
+                  <span class="icon is-small is-left">
+                    <i class="fa fa-asterisk font-size--xxxs has-text-danger"></i>
+                  </span>
+                </p>
+
+                {% if form.password2.errors %}
+                <p class="has-text-centered margin-top--smallest-rem margin-bottom--xs has-text-danger font-size--xxs">
+                  {{ form.password2.errors|striptags }}
+                </p>
+              {% endif %}
+              </div>
+            </div>
+          </div>
+
+          {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+
+          <div class="columns is-centered">
+            <div class="column is-5">
+              <button type="submit" class="button is-info is-fullwidth is-medium">Register</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="font-size--xxs has-text-centered margin-top--xxs">
+      <a class="" href="{% url 'account_login' %}">Login</a> &nbsp;·&nbsp;
+      <a href="{% url 'password_reset' %}">Forgot Password</a> &nbsp;·&nbsp;
+      <a href="../">Need Help?</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% endraw %}

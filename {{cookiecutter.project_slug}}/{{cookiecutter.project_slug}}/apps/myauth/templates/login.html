@@ -1,0 +1,107 @@
+{% raw -%}
+{% extends 'base.html' %}
+{% load static %}
+{% load socialaccount %}
+{% load myfilters %}
+
+{% block head_title %}Login{% endblock %}
+
+{% block content %}
+<div class="columns is-centered login-template">
+  <div class="column is-half ">
+    <div class="header">
+      <h1 class="title is-3 has-text-centered">Login</h1>
+
+      <p class="subtitle is-6 has-text-centered margin-bottom--s">
+        Please sign in with one of your existing third party accounts. Or,
+        <a href="{% url 'account_signup' %}" class="blue">sign up</a>
+        for a {{ site.name }} account and sign in below:
+      </p>
+    </div>
+
+    {% if form.login.errors or form.password.errors %}
+      <div class="message is-danger margin-top--xxxl">
+        <div class="message-header"></div>
+        <div class="message-body has-text-centered">
+          Either your Email or Password are incorrect please try again, or
+          <a href="{% url 'password_reset' %}"> reset your password. </a>
+        </div>
+      </div>
+    {% endif %}
+
+    <form id="login_form" method="post" action="{% url 'account_login' %}" novalidate>
+      {% csrf_token %}
+
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <div class="field">
+            <a class="button facebook-color has-text-white is-fullwidth" href="{% provider_login_url "facebook" %}">
+              <span class="icon"><i class="fa fa-facebook-official "></i></span>
+              <span>Facebook</span>
+            </a>
+          </div>
+
+          <div class="field">
+            <a class="button is-fullwidth has-text-white google-color" href="{% provider_login_url "google" %}">
+              <span class="icon"><i class="fa fa-google-plus "></i></span>
+              <span>Google</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-half is-centered">
+        <div class="column is-10 has-text-centered">
+          <p>
+            {{ form.non_field_errors }}
+          </p>
+
+          <div class="field {% if form.login.errors %}no-margins{% endif %}">
+           <p class="control has-icons-left">
+              {{ form.login|addclass:'input is-medium' }}
+              <span class="icon is-small is-left">
+                <i class="fa fa-asterisk font-size--xxxs has-text-danger"></i>
+              </span>
+            </p>
+          </div>
+
+          {% if form.login.errors %}
+            <p class="has-text-centered margin-top--smallest-rem margin-bottom--xs has-text-danger font-size--xxs">
+              {{ form.login.errors|striptags }}
+            </p>
+          {% endif %}
+
+          <div class="field {% if form.password.errors %}no-margins{% endif %}">
+          <p class="control has-icons-left">
+            {{ form.password|addclass:'input is-medium' }}
+            <span class="icon is-small is-left">
+              <i class="fa fa-asterisk font-size--xxxs has-text-danger"></i>
+            </span>
+          </p>
+          </div>
+
+
+          {% if form.password.errors %}
+            <p class="has-text-centered margin-top--smallest-rem margin-bottom--xs has-text-danger">
+              {{ form.password.errors|striptags }}
+            </p>
+          {% endif %}
+
+          <div class="columns is-centered">
+            <div class="column is-5">
+              <button type="submit" class="button is-info is-fullwidth is-medium">Login</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="font-size--xxs has-text-centered margin-top--xxs">
+      <a class="" href="{% url 'account_signup' %}">Sign Up</a> &nbsp;·&nbsp;
+      <a href="{% url 'password_reset' %}">Forgot Password</a> &nbsp;·&nbsp;
+      <a href="../">Need Help?</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% endraw %}

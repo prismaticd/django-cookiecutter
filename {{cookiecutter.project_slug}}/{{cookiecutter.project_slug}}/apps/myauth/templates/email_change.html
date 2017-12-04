@@ -1,0 +1,40 @@
+{% raw -%}
+{% extends 'base.html' %}
+{% load static %}
+{% load myfilters %}
+
+{% block head_title %}Change Email{% endblock %}
+
+
+{% block content %}
+<div class="columns is-centered">
+  <div class="column is-half has-text-centered">
+    <form class="form message is-large auth-templates" method="post" action="{% url 'email_change' %}" novalidate>
+      {% csrf_token %}
+      <div class="message-header"></div>
+
+      <div class="message-body">
+        <h1 class="title is-5">Change E-mail address associated with your account</h1>
+
+        <div class="field {% if form.email.errors %}no-margins{% endif %}">
+          <p class="control has-icons-left">
+            {{ form.email|addclass:'input is-medium' }}
+            <span class="icon is-small is-left">
+              <i class="fa fa-asterisk font-size--xxxs has-text-danger"></i>
+            </span>
+          </p>
+        </div>
+
+        {% if form.email.errors %}
+          <p class="has-text-centered margin-top--smallest-rem margin-bottom--xs has-text-danger font-size--xxs">
+            {{ form.email.errors|striptags }}
+          </p>`
+        {% endif %}
+
+        <button class="is-primary button" type="submit" name="action">Change Email</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% endraw %}

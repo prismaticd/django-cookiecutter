@@ -1,7 +1,117 @@
-
+@import "../../../node_modules/bulma/sass/utilities/initial-variables";
 
 @import "../../../node_modules/bulma/bulma";
 
-.content p {
+@import "variables";
+@import "mixins";
+{%- if cookiecutter.install_allauth == "y" %}
+@import "my_auth";
+{%- endif %}
 
+body{
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
 }
+
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+  html {
+    display: flex;
+    flex-direction: column;
+  }
+  body {
+    flex: 1 0 auto;
+  }
+}
+
+/* ---------------------------
+            Nav
+--------------------------- */
+nav.navbar{
+  //position: fixed;
+  //left: 0;
+  //right: 0;
+  //z-index: 200;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 1px 2px rgba(1,-1px,1,0.2);
+}
+
+a.navbar-item.is-active{
+  background-color: #f5f5f5;
+}
+nav > p{
+  padding-left: 0.5rem;
+}
+
+.navbar-menu.is-active, .navbar-burger.is-active{
+  -webkit-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+/* ---------------------------
+            Base styling
+--------------------------- */
+.no-margins{
+  margin: 0 !important;
+}
+
+.section{
+  padding: 2em;
+}
+
+.button{
+  border-radius: 3px;
+}
+.button .icon:first-child:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+p.subtitle{
+  font-weight: 300;
+}
+/* ---------------------------
+    Generic homepage styling
+--------------------------- */
+.homepage-is-generic{
+  .hero-content--left{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    p{
+      line-height:200%;
+    }
+  }
+
+  .hero-content--right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+      max-width: 200px;
+    }
+  }
+}
+
+.hero-body .subtitle{
+  letter-spacing: 1px;
+}
+
+.message-box{
+  height: auto;
+  max-width: 30em;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 1.5em;
+  position: absolute;
+  right: 1.5%;
+  z-index: 15;
+}
+/*==========================================
+  ALWAYS Keep project.scss import at end of file
+========================================= */
+@import "{{cookiecutter.project_slug}}";
