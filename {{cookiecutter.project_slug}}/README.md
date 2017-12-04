@@ -4,7 +4,7 @@
 # Dev install
 
 ```
-git checkout git@gitlab.com:{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}.git
+git clone git@gitlab.com:{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}.git
 cd {{cookiecutter.gitlab_project_slug}}
 pip install -r requirements_dev.txt --upgrade
 echo "SECRET_KEY = 'randomstring'" >> {{cookiecutter.project_slug}}/settings/local.py

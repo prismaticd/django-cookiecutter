@@ -34,7 +34,6 @@ for key in RQ_QUEUES:
     RQ_QUEUES[key]['ASYNC'] = False
 {% endif %}
 
-
 try:
     from .local import *  # noqa
 except ImportError:  # pragma: no cover
