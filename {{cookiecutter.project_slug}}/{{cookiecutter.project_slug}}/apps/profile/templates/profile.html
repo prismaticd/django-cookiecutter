@@ -1,0 +1,218 @@
+{% raw -%}
+{% extends 'base.html' %}
+{% load static %}
+{% load myfilters %}
+{% block head_title %}Profile{% endblock %}
+
+{% block content %}
+  <section class="columns is-centered">
+    <div class="column is-10">
+      <form class="form tile is-ancestor" method="post" action="{% url 'profile:edit' %}" id="userProfileForm">
+        {% csrf_token %}
+        <fieldset id="myFieldset" class="tile is-parent" {% if need_validation != true %} disabled {% endif %}>
+          <!-- ========== Side panel user profile details and form =========== -->
+          <div class="tile is-child">
+            <article class="card">
+              <div class="card-header">
+                <div class="card-header-icon">
+                  <i class="fa fa-2x fa-user-circle"></i>
+                </div>
+
+                <div class="card-header-title">
+                  Profile/Account
+                </div>
+              </div>
+
+              <article class="card-content">
+                <div class="content">
+                  {{ user_formset.management_form }}
+                  {% for form in user_formset %}
+                    {% for hidden in form.hidden_fields %}
+                      {{ hidden }}
+                    {% endfor %}
+                  {% endfor %}
+
+                  {% if user_formset.non_form_errors %}
+                    <p class="help is-danger">{{ user_formset.non_form_errors }}</p>
+                  {% endif %}
+
+                  {% for form in user_formset %}
+                    {% for field in form %}
+                      {% if field.label != 'Id' %}
+                        <div class="field">
+                          <label class="label">{{ field.label }}</label>
+                          {{ field|addclass:'input' }}
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  {% endfor %}
+
+                  {{ profile_formset.management_form }}
+                  {% for form in profile_formset %}
+                    {% for hidden in form.hidden_fields %}
+                      {{ hidden }}
+                    {% endfor %}
+                  {% endfor %}
+
+                  {% if profile_formset.non_form_errors %}
+                    <p class="help is-danger  has-text-grey">{{ profile_formset.non_form_errors }}</p>
+                  {% endif %}
+
+                  {% for form in profile_formset %}
+                    {% for field in form %}
+                      {% if field.label != 'User' %}
+                        <div class="field">
+                          <label class="label">{{ field.label }}</label>
+                          {{ field|addclass:'input' }}
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  {% endfor %}
+                </div>
+              </article>
+
+              <div class="card-footer">
+                <div class="card-footer-item">
+                  <a class="button is-info is-outlined is-fullwidth" id="editButtonProfile">
+                    <span class="icon is-small"><i class="fa fa-pencil"></i></span>
+
+                    <span>Edit</span>
+                  </a>
+                </div>
+
+                <div class="card-footer-item">
+                  <a class="button is-success is-outlined is-fullwidth" id="saveButtonProfile">
+                    <span>Save</span>
+
+                    <span class="icon is-small"><i class="fa fa-check"></i></span>
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </fieldset>
+
+        <section class="tile is-vertical is-9 is-parent">
+          <section class="tile is-ancestor">
+            <!-- ========== Remove active social accounts from profile =========== -->
+            <article class="tile is-parent">
+              <div class="tile is-child card">
+                <div class="card-header">
+                  <h4 class="card-header-title no-margins"><b>Active Social Accounts</b></h4>
+                </div>
+
+                <div class="content padding-all--xxs">
+                  {% if form.accounts %}{% for base_account in form.accounts %}{% with base_account.get_provider_account as account %}
+                    <p class="subtitle is-6">
+                      Here you can remove the social accounts associated with your account.
+                    </p>
+
+                    <label for="id_account_{{ base_account.id }}">
+                      <span class="socialaccount_provider" id="social-accounts">
+
+                      {% if 'facebook' in base_account.provider %}
+                        <span class="facebook field is-full has-addons">
+                          <span class="control is-expanded">
+                            <span class="button facebook-color has-text-white is-fullwidth" title="Facebook" style="">
+                              <i class="icon fa fa-facebook-official margin-right--xxxs"></i>
+                              <span> {{ account }}</span>
+                            </span>
+                          </span>
+
+                          <span class="control">
+                            <span class="button is-danger is-outlined"><i class="icon fa fa-trash "></i></span>
+                          </span>
+                        </span>
+
+                      {% endif %}
+
+                      {% if 'google' in base_account.provider %}
+
+                        <span class="facebook field is-full has-addons">
+                          <span class="control is-expanded">
+                            <span class="button google-color has-text-white is-fullwidth" title="Google" style="">
+                              <i class="icon fa fa-google-plus margin-right--xxxs"></i>
+                              <span> {{ account }}</span>
+                            </span>
+                          </span>
+
+                          <span class="control">
+                            <span class="button is-danger is-outlined"><i class="icon fa fa-trash "></i></span>
+                          </span>
+                        </span>
+                      {% endif %}
+                      </span>
+                    </label>
+                  {% endwith %}{% endfor %}{% endif %}
+                </div>
+              </div>
+            </article>
+
+            <!-- ========== Add inactive social accounts to profile =========== -->
+            <article class="tile is-parent">
+              <div class="tile is-child card">
+                <div class="card-header">
+                  <h4 class="card-header-title no-margins"><b>Inactive Social Accounts</b></h4>
+                </div>
+
+                <div class="content padding-all--xxs">
+                  <p class="subtitle is-6">Add third party social accounts to ease your login experience.</p>
+
+                  {% if form.accounts.count < 2 %}{% with form.accounts.values.0.provider as provider1 %}{% with form.accounts.values.1.provider as provider2 %}
+                    {% if not 'facebook' in provider1 or provider2 %}
+                      <a class="button is-fullwidth facebook-color has-text-white margin-top--xxs"
+                         href="/accounts/facebook/login/?process=connect" title="Facebook">
+
+                        <i class="icon fa fa-facebook-official"></i>
+                        <p> Facebook </p>
+                      </a>
+                    {% endif %}
+
+                    {% if not 'google' in provider1 or provider2 %}
+                      <a href="/accounts/google/login/?process=connect" class="button is-fullwidth google-color has-text-white margin-top--xxl" title="Google">
+                        <i class="icon fa fa-google-plus"></i>
+                        <p> Google </p>
+                      </a>
+                    {% endif %}
+                  {% endwith %}{% endwith %}{% endif %}
+                </div>
+              </div>
+            </article>
+          </section>
+          <!-- ========== Links to reset passwords/change emails etcc. =========== -->
+          <section class="tile is-ancestor">
+            <div class="tile is-parent">
+              <article class="tile is-child card">
+                <div class="card-header padding-all--xxs">
+                  <div class="content">
+                    <h3 class="title is-3"> </h3>
+                    <p class="subtitle is-5">Email and Password Settings</p>
+                  </div>
+                </div>
+
+                <div class="content padding-all--xxs">
+                  <ul>
+                    <li>
+                      <a href="{% url 'email_change' %}">change email</a>
+                    </li>
+
+                    {% if user.has_usable_password %}
+                      <li>
+                        <a href="{% url 'password_reset' %}">reset your password</a>
+                      </li>
+                    {% else %}
+                      <li>
+                        <a href="{% url 'password_set' %}">Set your password</a>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </div>
+              </article>
+            </div>
+          </section>
+        </section>
+      </form>
+    </div>
+  </section>
+{% endblock %}
+{% endraw %}

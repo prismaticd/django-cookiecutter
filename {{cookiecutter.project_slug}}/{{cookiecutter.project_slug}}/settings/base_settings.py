@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
 {%- if cookiecutter.install_allauth == "y" %}
     '{{cookiecutter.project_slug}}.apps.myauth',
+    '{{cookiecutter.project_slug}}.apps.profile.apps.ProfileConfig',
 {%- endif %}
 
     'import_export',
@@ -81,6 +82,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     '{{cookiecutter.project_slug}}.contrib.request.global_middleware',
+{%- if cookiecutter.install_allauth == "y" %}
+    '{{cookiecutter.project_slug}}.apps.profile.middleware.ProfileMiddleware',
+{%- endif %}
 {% if cookiecutter.install_wagtail == "y" %}
     'wagtail.wagtailcore.middleware.SiteMiddleware',
     'wagtail.wagtailredirects.middleware.RedirectMiddleware',
@@ -195,7 +199,7 @@ LOGGING = {
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
         },
         'django': {
-'handlers': ['console'],
+            'handlers': ['console'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
         },
     },
@@ -254,7 +258,9 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_ADAPTER = "{{cookiecutter.project_slug}}.apps.myauth.adapters.AccountAdapter"
 
 LOGIN_URL = 'account_login'
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = 'profile:edit'
+LOGOUT_REDIRECT_URL = 'account_login'
 {% endif %}

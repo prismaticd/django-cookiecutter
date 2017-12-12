@@ -2,6 +2,7 @@ from pathlib import Path
 import shutil
 
 install_allauth = "{{ cookiecutter.install_allauth }}" == "y"
+install_behave_test = "{{ cookiecutter.install_behave_test }}" == "y"
 
 base_dir = Path()
 project_dir = Path(base_dir, "{{ cookiecutter.project_slug }}")
@@ -23,6 +24,13 @@ def delete(path):
 if not install_allauth:
     for path in [
         Path(apps_dir, "myauth"),
+        Path(apps_dir, "profile"),
         Path(project_sass_dir, "my_auth.scss"),
+    ]:
+        delete(path)
+
+if not install_allauth or not install_behave_test:
+    for path in [
+        Path(base_dir, "features"),
     ]:
         delete(path)

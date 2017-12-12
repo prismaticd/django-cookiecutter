@@ -4,8 +4,8 @@
 set -e
 # -u exit on undefined variables
 set -u
-# -x print command before running
-set -x
+# -x print command before running (note that enabling this makes the gitlab test fail emails less readable)
+#set -x
 # bubble up the non 0 on pipes
 set -o pipefail
 

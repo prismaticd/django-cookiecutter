@@ -3,29 +3,51 @@
 from .base_settings import *  # noqa
 import os
 
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
+{%- if cookiecutter.database_type == "mysql" %}
+DATABASE_VENDOR = os.environ.get('DATABASE_VENDOR', 'mysql')
+{%- elif cookiecutter.database_type == "postgres" %}
+DATABASE_VENDOR = os.environ.get('DATABASE_VENDOR', 'postgresql')
+{%- endif %}
+USE_DEBUG_TOOLBAR = False
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 {% if cookiecutter.database_type == "mysql" %}
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get("MYSQL_DATABASE", "{{cookiecutter.project_slug}}"),
-        'USER': os.environ.get("DB_USER", "root"),
-        'PASSWORD': os.environ.get("MYSQL_ROOT_PASSWORD"),
-        'HOST': os.environ.get("DB_HOST", "127.0.0.1"),
-        'PORT': os.environ.get("DB_PORT", "3306"),
+if DATABASE_VENDOR == 'mysql':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get("MYSQL_DATABASE", "{{cookiecutter.project_slug}}"),
+            'USER': os.environ.get("DB_USER", "root"),
+            'PASSWORD': os.environ.get("MYSQL_ROOT_PASSWORD"),
+            'HOST': os.environ.get("DB_HOST", "127.0.0.1"),
+            'PORT': os.environ.get("DB_PORT", "3306"),
+        }
     }
-}
 {% elif cookiecutter.database_type == "postgres" %}
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get("POSTGRES_DB", 'postgres'),
-        'USER': os.environ.get("POSTGRES_USER", 'postgres'),
-        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", ''),
-        'HOST': os.environ.get("DB_HOST", '127.0.0.1'),
-        'PORT': os.environ.get("DB_PORT", '5432'),
+if DATABASE_VENDOR == 'postgresql':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get("POSTGRES_DB", 'postgres'),
+            'USER': os.environ.get("POSTGRES_USER", 'postgres'),
+            'PASSWORD': os.environ.get("POSTGRES_PASSWORD", ''),
+            'HOST': os.environ.get("DB_HOST", '127.0.0.1'),
+            'PORT': os.environ.get("DB_PORT", '5432'),
+        }
     }
-}
 {% endif %}
+elif DATABASE_VENDOR == 'sqlite':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    raise NotImplementedError(f"DATABASE_VENDOR={DATABASE_VENDOR}")
+
 
 INSTALLED_APPS += [
 {%- if cookiecutter.install_behave_test == "y" %}

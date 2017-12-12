@@ -29,7 +29,7 @@ git pull && pip install -r requirements_dev.txt --upgrade && npm update  && pyth
 
 ## One-liner to reset (sqlite) dev database
 ```
-rm db.sqlite3 && python manage.py makemigrations && python manage.py migrate && python manage.py init_data
+rm db.sqlite3 -f && python manage.py makemigrations && python manage.py migrate && python manage.py init_data
 ```
 
 ## To run postgres in dev

@@ -11,12 +11,19 @@ from wagtail.wagtailcore import urls as wagtail_urls{% endif %}
 from .apps.home.urls import home
 {%- if cookiecutter.install_allauth == "y" %}
 from .apps.myauth.urls import myauth
+from .apps.profile.urls import profile
 {%- endif %}
 from .contrib.health_check import health_check
 
 urlpatterns = [
     url(r'^healthcheck/', health_check),
+{%- if cookiecutter.install_rq == "y" %}
+    url(r'^admin/django-rq/', include('django_rq.urls')),
+{%- endif %}
     url(r'^admin/', admin.site.urls),
+{%- if cookiecutter.install_allauth == "y" %}
+    url(r'^', profile.urls),
+{%- endif %}
     url(r'^home/', home.urls),
 {%- if cookiecutter.install_wagtail == "y" %}
     url(r'^cms/', include(wagtailadmin_urls)),
@@ -24,17 +31,15 @@ urlpatterns = [
 {%- endif %}
 {%- if cookiecutter.install_allauth == "y" %}
 
+    # todo - move to oauth/
     url(r'^accounts/', include('allauth.socialaccount.providers.google.urls')),
     url(r'^accounts/', include('allauth.socialaccount.providers.facebook.urls')),
 
     url(r'^auth/', myauth.urls),
 {%- endif %}
-{%- if cookiecutter.install_rq == "y" %}
-    url(r'^django-rq/', include('django_rq.urls')),
-{%- endif %}
 ]
 
-if settings.DEBUG:  # pragma: no cover
+if settings.DEBUG and getattr(settings, "USE_DEBUG_TOOLBAR", settings.DEBUG):  # pragma: no cover
     import debug_toolbar
     from django.conf.urls.static import static
 
