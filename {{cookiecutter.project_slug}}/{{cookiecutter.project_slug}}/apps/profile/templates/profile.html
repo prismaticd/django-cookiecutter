@@ -193,16 +193,16 @@
                 <div class="content padding-all--xxs">
                   <ul>
                     <li>
-                      <a href="{% url 'email_change' %}">change email</a>
+                      <a href="{% url 'account_email' %}">Change Account Email</a>
                     </li>
 
                     {% if user.has_usable_password %}
                       <li>
-                        <a href="{% url 'password_reset' %}">reset your password</a>
+                        <a href="{% url 'password_reset' %}">Reset Your Password</a>
                       </li>
                     {% else %}
                       <li>
-                        <a href="{% url 'password_set' %}">Set your password</a>
+                        <a href="{% url 'password_set' %}">Set Your Password</a>
                       </li>
                     {% endif %}
                   </ul>

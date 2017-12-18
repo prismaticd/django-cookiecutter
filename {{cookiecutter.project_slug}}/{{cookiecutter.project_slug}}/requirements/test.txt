@@ -1,5 +1,6 @@
 -r base.txt
 coverage
+factory_boy
 {%- if cookiecutter.install_behave_test == "y" %}
 behave
 behave-django

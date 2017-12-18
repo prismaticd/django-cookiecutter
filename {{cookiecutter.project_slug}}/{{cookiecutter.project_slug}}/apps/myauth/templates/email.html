@@ -1,0 +1,140 @@
+{% raw -%}
+{% extends 'base.html' %}
+{% load static %}
+{% load myfilters %}
+{% load myauth_tags %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Account" %}{% endblock %}
+
+{% block content %}
+  <div class="columns is-centered">
+    <div class="column is-half-desktop has-text-centered">
+      <form class="form" method="post" action="{% url 'account_email' %}" novalidate>
+        {% csrf_token %}
+        <section class="message auth-templates is-large" id="email-primary">
+          <div class="message-body no-padding">
+
+            {% get_user_primary_email user as primary_email %}
+            {% get_user_other_emails user as other_emails %}
+
+            {% if primary_email %}
+              <div class="tile is-child box is-radiusless has-text-centered notification is-light">
+                <h1 class="title is-3">Primary Email Address</h1>
+                <p class="subtitle is-5">This is the primary email address associated with your account:</p>
+
+                <div class="box">
+                  <span class="email-wrapper">{{ primary_email.email }}</span>
+
+                  {% if primary_email.verified %}
+                    <span class="has-text-success font-size--s"><i class="fa fa-check-circle"></i> Verified</span>
+                  {% else %}
+                    <span class="has-text-danger font-size--s"><i class="fa fa-times"></i> Unverified</span>
+                  {% endif %}
+
+                  {% if not primary_email.verified %}
+                    <div class="buttons is-centered has-addons margin-top--l">
+                      <button class="button is-primary" type="submit"
+                              name="action_send">
+                        <span>Resend Verification</span>
+                      </button>
+                    </div>
+                  {% endif %}
+                </div>
+                <p class="font-size--xxs has-text-info">Note: If you want to change your <b>primary email</b> you need
+                  to add a new email and <b>verify</b> it.</p>
+              </div>
+            {% endif %}
+
+
+            {% if other_emails %}
+              <div class="margin-all--l">
+                <h2 class="title is-4">Additional Email Addresses</h2>
+
+                {% for emailaddress in other_emails %}
+                  <div class="font-size--s">
+                      <label for="email_radio_{{ forloop.counter }}" class="radio">
+                        <input id="email_radio_{{ forloop.counter }}" type="radio" name="email"
+                               {% if forloop.counter == 1 %}checked="checked"  {% endif %}
+                               {% if other_emails.count == 1 %}class="is-invisible" {% endif %}
+                               value="{{ emailaddress.email }}"/>
+
+                        {{ emailaddress.email }}
+                      </label>
+
+                    {% if  emailaddress.verified %}
+                      <span class="has-text-success font-size--s"><i class="fa fa-check-circle"></i> Verified</span>
+                    {% else %}
+                      <span class="has-text-danger font-size--s"><i class="fa fa-times"></i> Unverified</span>
+                    {% endif %}
+                  </div>
+                {% endfor %}
+                <hr>
+
+                <div class="buttons is-centered">
+                  <button class="button" type="submit" name="action_primary">
+                    <span>Make Primary</span>
+                  </button>
+
+                  <button class="button {% if not emailaddress.verified %}is-primary{% endif %}" type="submit" name="action_send">
+                    <span>Resend Verification</span>
+                  </button>
+
+                  <button class="button is-danger is-outlined" type="submit" name="action_remove">
+                    <fa class="icon fa fa-trash fa-trash"></fa>
+                  </button>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </section>
+      </form>
+
+      <form method="post" action="{% url 'account_email' %}" class="message margin-top--xxxl is-dark" novalidate>
+        <div class="message-header"></div>
+        <div class="message-body">
+
+          {% csrf_token %}
+
+          <h3 class="margin-top--xxxs">Add New Email Address</h3>
+
+          <div class="field" {% if form.email.errors %}no-margins{% endif %}>
+            <p class="control has-icons-left">
+              {{ form.email|addclass:'input is-medium' }}
+              <span class="icon is-small is-left">
+            <i class="fa fa-asterisk font-size--xxxs has-text-danger"></i>
+          </span>
+            </p>
+          </div>
+
+          {% if form.email.errors %}
+            <p class="has-text-centered margin-top--smallest-rem margin-bottom--xs has-text-danger font-size--xxs">
+              {{ form.email.errors|striptags }}
+            </p>
+          {% endif %}
+
+          <button class="button is-success" name="action_add" type="submit">Add Email</button>
+      </form>
+
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block extra_body %}
+  <script type="text/javascript">
+    (function () {
+      var message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
+      var actions = document.getElementsByName('action_remove');
+      if (actions.length) {
+        actions[0].addEventListener("click", function (e) {
+          if (!confirm(message)) {
+            e.preventDefault();
+          }
+        });
+      }
+    })();
+  </script>
+{% endblock %}
+{% endraw %}

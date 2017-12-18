@@ -30,11 +30,6 @@ urlpatterns = [
     url(r'^documents/', include(wagtaildocs_urls)),
 {%- endif %}
 {%- if cookiecutter.install_allauth == "y" %}
-
-    # todo - move to oauth/
-    url(r'^accounts/', include('allauth.socialaccount.providers.google.urls')),
-    url(r'^accounts/', include('allauth.socialaccount.providers.facebook.urls')),
-
     url(r'^auth/', myauth.urls),
 {%- endif %}
 ]

@@ -16,13 +16,12 @@ class MyLoginView(allauth_views.LoginView):
     success_url = reverse_lazy('profile:edit')
 
 
-class MyEmailChangeView(allauth_views.EmailView):
-    template_name = "email_change.html"
-    success_url = reverse_lazy('profile:edit')
+class MyEmailView(allauth_views.EmailView):
+    template_name = "email.html"
+    #success_url = reverse_lazy('profile:edit')
 
 
 class MyConfirmEmailView(allauth_views.ConfirmEmailView):
-    template_name = "email_confirm.html"
     success_url = reverse_lazy('profile:edit')
 
 

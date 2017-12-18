@@ -1,27 +1,16 @@
-from features.hints import BehaveContext
 import re
+
 from behave import given, when, then
-from django.contrib.auth import get_user_model
 from django.core import mail
-from django.urls import reverse
-#from behave_django.environment import PatchedContext
-# from behave_django.testcase import BehaviorDrivenTestCase
-# from django.test import SimpleTestCase
+
+from {{ cookiecutter.project_slug }}.apps.myauth.tests.factories import VerifiedUserFactory
 from {{ cookiecutter.project_slug }}.apps.profile.models import Profile
-
-
-# class BehaveContext(PatchedContext):
-#     test: BehaviorDrivenTestCase
+from features.hints import BehaveContext
 
 
 @given("a registered user")
 def step_impl(context: BehaveContext):
-    User = get_user_model()
-    context.user = User()
-    context.user.email = "foo@bar.com"
-    context.user.username = "foo@bar.com"
-    context.user.password = "qwertyuiop"
-    context.user.save()
+    context.user = VerifiedUserFactory()
 
 @when("they submit a password reset request")
 def step_impl(context: BehaveContext):
