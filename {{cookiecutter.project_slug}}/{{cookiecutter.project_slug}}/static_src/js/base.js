@@ -1,18 +1,24 @@
 $(document).ready(function () {
-    var burger = document.querySelector('.nav-toggle');
-    var menu = document.querySelector('.nav-menu');
+    var burger = document.querySelector('.navbar-burger');
+    var menu = document.querySelector('.navbar-menu');
     burger.addEventListener('click', function() {
         burger.classList.toggle('is-active');
         menu.classList.toggle('is-active');
     });
 
-  document.getElementById("saveButtonProfile").addEventListener("click", function () {
-    if (!document.getElementsByTagName("fieldset")[0].disabled)
-      document.getElementById('userProfileForm').submit()
-  });
-  document.getElementById("editButtonProfile").addEventListener("click", function () {
-    document.getElementsByTagName("fieldset")[0].disabled = !document.getElementsByTagName("fieldset")[0].disabled;
-  });
+  var saveButton = document.getElementById("saveButtonProfile")
+  if (saveButton) {
+    saveButton.addEventListener("click", function () {
+        if (!document.getElementsByTagName("fieldset")[0].disabled)
+          document.getElementById('userProfileForm').submit()
+      });
+  }
+  var editButton = document.getElementById("editButtonProfile")
+  if (editButton) {
+    editButton.addEventListener("click", function () {
+      document.getElementsByTagName("fieldset")[0].disabled = !document.getElementsByTagName("fieldset")[0].disabled;
+    });
+  }
 
   /* -----------------
   Messages - dismissal
