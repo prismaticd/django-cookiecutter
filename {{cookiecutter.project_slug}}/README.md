@@ -32,6 +32,7 @@ git pull && pip install -r requirements_dev.txt --upgrade && npm update  && pyth
 rm db.sqlite3 -f && python manage.py makemigrations && python manage.py migrate && python manage.py init_data
 ```
 
+{% if cookiecutter.database_type == "postgres" %}
 ## To run postgres in dev
 
 ```
@@ -52,6 +53,30 @@ DATABASES = {
     }
 }
 ```
+{% elif cookiecutter.database_type == "mysql" %}
+## To run mysql in dev
+
+Create database command
+```
+CREATE DATABASE {{cookiecutter.project_slug}} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+
+Add something like this to your `settings/local.py`
+
+```
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get("MYSQL_DATABASE", '{{cookiecutter.project_slug}}'),
+        'USER': os.environ.get("MYSQL_USER", 'root'),
+        'PASSWORD': os.environ.get("MYSQL_PASSWORD", ''),
+        'HOST': os.environ.get("DB_HOST", '127.0.0.1'),
+        'PORT': os.environ.get("DB_PORT", '3306'),
+    }
+}
+```
+{% endif %}
 
 {% if cookiecutter.install_allauth == "y" %}
 ## Social login in dev

@@ -1,9 +1,10 @@
 {
   "project_name": "Project Name",
   "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_') }}",
+  "project_slug_dash": "{{ cookiecutter.project_slug|replace('_', '-')}}",
   "gitlab_group": "prismaticdigital",
-  "gitlab_project_slug": "{{ cookiecutter.project_slug }}",
-  "prod_host": "www.{{ cookiecutter.project_slug }}.com",
+  "gitlab_project_slug": "{{ cookiecutter.project_slug_dash }}",
+  "prod_host": "www.{{ cookiecutter.project_slug_dash }}.com",
   "staging_host": "staging.{{ cookiecutter.prod_host }}",
 
   "database_type": ["mysql", "postgres"],

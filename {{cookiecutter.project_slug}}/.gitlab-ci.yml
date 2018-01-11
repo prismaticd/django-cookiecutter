@@ -25,9 +25,9 @@ cache:
   untracked: true
 
 build:
-  image: docker:stable
-  services:
-    - docker:stable-dind
+#  image: docker:stable
+#  services:
+#    - docker:stable-dind
   stage: build
   before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
@@ -41,8 +41,9 @@ build:
     - docker push $CONTAINER_TEST_IMAGE
   tags:
     - linux
+    - shell
 
-test1:
+test_main:
   stage: test
   services:
 {% if cookiecutter.database_type == "mysql" %}    - mysql:latest
@@ -52,15 +53,43 @@ test1:
     - ./entrypoint.sh test
   tags:
     - linux
+    - docker
   artifacts:
     paths:
       - coverage/
 
+test_debug:
+  # Check for issues that only cause failures when DEBUG=True (eg missing Django templates)
+  stage: test
+  services:
+{% if cookiecutter.database_type == "mysql" %}    - mysql:latest
+{% elif cookiecutter.database_type == "postgres" %}     - postgres:latest
+{% endif %}  image: $CONTAINER_TEST_IMAGE
+  script:
+    - ./entrypoint.sh test
+  tags:
+    - linux
+    - docker
+  variables:
+    DEBUG: 1
+
+test_sqlite:
+  # Check for issues that only affect sqlite (to avoid breaking frontend dev environment)
+  stage: test
+  image: $CONTAINER_TEST_IMAGE
+  script:
+    - ./entrypoint.sh test
+  tags:
+    - linux
+    - docker
+  variables:
+    DATABASE_VENDOR: sqlite
+
 release-image:
   stage: release-image
-  image: docker:latest
-  services:
-    - docker:dind
+#  image: docker:latest
+#  services:
+#    - docker:dind
   before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
@@ -71,6 +100,7 @@ release-image:
     - master
   tags:
     - linux
+    - shell
 
 pages:
   stage: release-image
@@ -83,4 +113,6 @@ pages:
     expire_in: 30 days
   only:
     - master
-
+  tags:
+    - linux
+    - shell
