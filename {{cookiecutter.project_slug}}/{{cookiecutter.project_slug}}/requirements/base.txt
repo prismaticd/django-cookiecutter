@@ -2,8 +2,7 @@ pip>9
 # LTS
 django~=1.11.10
 {%- if cookiecutter.install_wagtail == "y" %}
-# LTS
-wagtail~=1.12.3
+wagtail>=2
 {%- endif %}
 boto
 requests
