@@ -1,7 +1,9 @@
 pip>9
-django>1.11,<2
+# LTS
+django~=1.11.10
 {%- if cookiecutter.install_wagtail == "y" %}
-wagtail
+# LTS
+wagtail~=1.12.3
 {%- endif %}
 boto
 requests
