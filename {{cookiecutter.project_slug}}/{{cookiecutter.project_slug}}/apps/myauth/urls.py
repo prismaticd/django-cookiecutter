@@ -21,7 +21,7 @@ class AuthApp(object):
             url(r'^email/change/$', views.MyEmailView.as_view(), name='account_email'),
             url(r"^email/confirm/(?P<key>[-:\w]+)/$", views.MyConfirmEmailView.as_view(), name="account_confirm_email"),
             url(r'^password/change/$', views.MyPasswordChangeView.as_view(), name='account_change_password'),
-            url(r'^password/set/$', views.MyPasswordSetView.as_view(), name='password_set'),
+            url(r'^password/set/$', views.MyPasswordSetView.as_view(), name='account_set_password'),
             url(r'^password/reset/$', views.MyPasswordResetView.as_view(), name='password_reset'),
             url(r"^password/reset/done/$", views.MyPasswordResetDoneView.as_view(), name="account_reset_password_done"),
             url(r'^password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$', views.MyPasswordResetFromKeyView.as_view(), name='account_reset_password_from_key'),
