@@ -4,22 +4,19 @@ import random
 
 {% if cookiecutter.install_allauth == "y" -%}
 from allauth.socialaccount.models import SocialApp
-{%- endif %}
+{% endif %}
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.files import File
-from django.core.files.images import ImageFile
-from django.core.management.base import BaseCommand
 from django.contrib.sites.models import Site as DjangoSite
+from django.core.management.base import BaseCommand
 from django.utils import lorem_ipsum
-{% if cookiecutter.install_wagtail == "y" -%}
-from wagtail.wagtailcore.models import Page, Site as WagtailSite, ContentType
-from wagtail.wagtailimages.models import Image
-{%- endif %}
 
+{% if cookiecutter.install_wagtail == "y" -%}
+from wagtail.core.models import Page, Site as WagtailSite, ContentType
+{%- endif %}
 {% if cookiecutter.install_wagtail == "y" %}
 from ...models import HomePage
-{% endif %}
+{%- endif %}
 
 random.seed(123456789)
 
@@ -67,7 +64,6 @@ class Command(BaseCommand):
 
             return new_page
 {% endif %}
-
     def handle(self, *args, **options):
 {%- if cookiecutter.install_wagtail == "y" %}
         nb_objects = options['nb_objects']
@@ -118,4 +114,4 @@ class Command(BaseCommand):
                                secret=getattr(settings, 'INIT_AUTH_GOOGLE_SECRET_KEY', 'changeme'))
             google.save()
             google.sites.add(1)
-{% endif %}
+{% endif -%}
