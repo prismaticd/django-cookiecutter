@@ -2,37 +2,60 @@ stages:
 - build
 - test
 - release-image
-- pages
+- deploy
+- actions
 
 variables:
   CONTAINER_TEST_IMAGE: registry.gitlab.com/{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}:$CI_BUILD_REF_NAME
   CONTAINER_RELEASE_IMAGE: registry.gitlab.com/{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}:latest
   DOCKER_DRIVER: overlay
-{% if cookiecutter.database_type == "mysql" %}  MYSQL_DATABASE: "{{cookiecutter.project_slug}}db"
+  {% if cookiecutter.database_type == "mysql" -%}
+  MYSQL_DATABASE: "{{cookiecutter.project_slug}}db"
   MYSQL_ROOT_PASSWORD: "rootpassword"
   DB_USER: "root"
   DB_PORT: "3306"
   DB_HOST: "mysql"
-{% elif cookiecutter.database_type == "postgres" %}  POSTGRES_DB: "{{cookiecutter.project_slug}}db"
+  {% elif cookiecutter.database_type == "postgres" -%}
+  POSTGRES_DB: "{{cookiecutter.project_slug}}db"
   POSTGRES_PASSWORD: "rootpassword"
   POSTGRES_USER: "root"
   DB_PORT: "5432"
   DB_HOST: "postgres"
-{% endif %}
-
+  {% endif -%}
+  AWS_CONTAINER_IMAGE: TODO
+  AWS_CONTAINER_IMAGE_UAT: TODO
+  CONTAINER_STAGING: {{cookiecutter.gitlab_project_slug}}-latest-staging
+  CONTAINER_UAT: {{cookiecutter.gitlab_project_slug}}-latest-uat
+  AWS_REGION: us-west-2
+  AWS_ECS_CLUSTER: TODO
+  AWS_ECS_STAGING_SERVICE: {{cookiecutter.gitlab_project_slug}}-staging
+  AWS_ECS_STAGING_TASK: TODO
+  AWS_ECS_UAT_SERVICE: {{cookiecutter.gitlab_project_slug}}-uat
+  AWS_ECS_UAT_TASK: TODO
+  AWS_ECS_PRODUCTION_SERVICE: {{cookiecutter.gitlab_project_slug}}-production
+  AWS_ECS_PRODUCTION_TASK: TODO
+  SLACK_CHANNEL: {{cookiecutter.gitlab_project_slug}}-releases
+  SLACK_USER: prismatic-{{cookiecutter.gitlab_project_slug}}-release
+  NR_APPLICATION_ID_STAGING: TODO
+  NR_APPLICATION_ID_UAT: TODO
+  NR_APPLICATION_ID_PROD: TODO
 
 cache:
-  untracked: true
+  key: empty
+  paths: []
+  policy: pull
 
 build:
 #  image: docker:stable
 #  services:
 #    - docker:stable-dind
   stage: build
+  retry: 2
   before_script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
     - >
+      ./conf/generate_meta.sh;
       if ! docker pull $CONTAINER_TEST_IMAGE; then
         docker build -t $CONTAINER_TEST_IMAGE .;
       else
@@ -46,9 +69,13 @@ build:
 test_main:
   stage: test
   services:
-{% if cookiecutter.database_type == "mysql" %}    - mysql:latest
-{% elif cookiecutter.database_type == "postgres" %}     - postgres:latest
-{% endif %}  image: $CONTAINER_TEST_IMAGE
+    {% if cookiecutter.database_type == "mysql" -%}
+    - mysql:5.7
+    - redis:latest
+  {% elif cookiecutter.database_type == "postgres" -%}
+    - postgres:latest
+  {% endif -%}
+  image: $CONTAINER_TEST_IMAGE
   script:
     - ./entrypoint.sh test
   tags:
@@ -62,9 +89,13 @@ test_debug:
   # Check for issues that only cause failures when DEBUG=True (eg missing Django templates)
   stage: test
   services:
-{% if cookiecutter.database_type == "mysql" %}    - mysql:latest
-{% elif cookiecutter.database_type == "postgres" %}     - postgres:latest
-{% endif %}  image: $CONTAINER_TEST_IMAGE
+    {% if cookiecutter.database_type == "mysql" -%}
+    - mysql:5.7
+    - redis:latest
+  {% elif cookiecutter.database_type == "postgres" -%}
+    - postgres:latest
+  {% endif -%}
+  image: $CONTAINER_TEST_IMAGE
   script:
     - ./entrypoint.sh test
   tags:
@@ -76,9 +107,12 @@ test_debug:
 test_sqlite:
   # Check for issues that only affect sqlite (to avoid breaking frontend dev environment)
   stage: test
+  services:
+    - redis:latest
   image: $CONTAINER_TEST_IMAGE
   script:
-    - ./entrypoint.sh test
+    # --parallel speeds up sqlite tests but doesn't seems to help mysql much
+    - ./entrypoint.sh test --parallel
   tags:
     - linux
     - docker
@@ -87,6 +121,7 @@ test_sqlite:
 
 release-image:
   stage: release-image
+  retry: 2
 #  image: docker:latest
 #  services:
 #    - docker:dind
@@ -96,23 +131,111 @@ release-image:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
     - docker push $CONTAINER_RELEASE_IMAGE
+    - docker logout registry.gitlab.com
+    - $(aws ecr get-login --no-include-email --region $AWS_REGION)
+    - docker tag $CONTAINER_TEST_IMAGE $AWS_CONTAINER_IMAGE
+    - docker push $AWS_CONTAINER_IMAGE
+  # TODO - remove the following line once staging environment exists
+  when: manual
   only:
     - master
   tags:
     - linux
     - shell
+    - aws
 
-pages:
-  stage: release-image
+deploy_staging:
+  image: bchabord/ecs-deploy-no-entrypoint:latest
+  retry: 2
+  stage: deploy
   script:
-    - rm -rf public/coverage
-    - mv coverage/ public/
-  artifacts:
-    paths:
-      - public
-    expire_in: 30 days
+    - ecs-deploy -n $AWS_ECS_STAGING_SERVICE -c $AWS_ECS_CLUSTER -r $AWS_REGION --max-definitions 9 -i $AWS_CONTAINER_IMAGE
+    - LAST_TASK=$(aws ecs list-task-definitions --region=$AWS_REGION --sort DESC --status ACTIVE --family-prefix $AWS_ECS_STAGING_TASK --max-items 1 | jq -r '.taskDefinitionArns[0]')
+    - >
+      aws ecs run-task --cluster $AWS_ECS_CLUSTER --region=$AWS_REGION --task-definition ${LAST_TASK} --overrides '{"containerOverrides":[{"name": "${CONTAINER_STAGING}", "command": ["manage", "migrate"]}]}'
+    - >
+      export RELEASE_ID=$(echo ${LAST_TASK} | rev | cut -d: -f1 | rev)
+      slack_release_message.sh;
+      export NR_APPLICATION_ID=${NR_APPLICATION_ID_STAGING};
+      new_relic_deploy_message.sh
+  # TODO - remove the following line once staging environment exists
+  when: manual
+  only:
+    - master
+  environment: staging
+  tags:
+    - linux
+    - docker
+    - aws
+
+release-image-uat:
+  stage: release-image
+  retry: 2
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
+    - docker logout registry.gitlab.com
+    - $(aws ecr get-login --no-include-email --region $AWS_REGION)
+    - docker tag $CONTAINER_TEST_IMAGE $AWS_CONTAINER_IMAGE_UAT
+    - docker push $AWS_CONTAINER_IMAGE_UAT
+  only:
+    - uat
+  tags:
+    - linux
+    - shell
+    - aws
+
+deploy_uat:
+  image: bchabord/ecs-deploy-no-entrypoint:latest
+  retry: 2
+  stage: deploy
+  script:
+    - ecs-deploy --timeout 300 -n ${AWS_ECS_UAT_SERVICE} -c ${AWS_ECS_CLUSTER} -r ${AWS_REGION} --max-definitions 9 -i ${AWS_CONTAINER_IMAGE_UAT}
+    - LAST_TASK=$(aws ecs list-task-definitions --region=$AWS_REGION --sort DESC --status ACTIVE --family-prefix $AWS_ECS_UAT_TASK --max-items 1 | jq -r '.taskDefinitionArns[0]')
+    - >
+      aws ecs run-task --cluster $AWS_ECS_CLUSTER --region=$AWS_REGION --task-definition ${LAST_TASK} --overrides '{"containerOverrides":[{"name": "${CONTAINER_UAT}", "command": ["manage", "migrate"]}]}'
+    - >
+      export RELEASE_ID=$(echo ${LAST_TASK} | rev | cut -d: -f1 | rev)
+      slack_release_message.sh;
+      export NR_APPLICATION_ID=${NR_APPLICATION_ID_UAT}";
+      new_relic_deploy_message.sh
+  only:
+    - uat
+  environment: uat
+  tags:
+    - linux
+    - docker
+    - aws
+
+deploy_prod:
+  image: bchabord/ecs-deploy-no-entrypoint:latest
+  stage: actions
+  script:
+    - ecs-deploy -n $AWS_ECS_PRODUCTION_SERVICE -c $AWS_ECS_CLUSTER -r $AWS_REGION -i --max-definitions 9 $AWS_CONTAINER_IMAGE
+  only:
+    - master
+  environment: production
+  when: manual
+  tags:
+    - linux
+    - docker
+    - aws
+
+reset_staging:
+  stage: actions
+  image: bchabord/ecs-deploy-no-entrypoint:latest
+  script:
+    # Get the name of the container
+    - LAST_TASK=$(aws ecs list-task-definitions --region=$AWS_REGION --sort DESC --status ACTIVE --family-prefix $AWS_ECS_STAGING_TASK --max-items 1 | jq -r '.taskDefinitionArns[0]')
+    - >
+      aws ecs run-task --cluster $AWS_ECS_CLUSTER --region=$AWS_REGION --task-definition ${LAST_TASK} --overrides '{"containerOverrides":[{"name": "${CONTAINER_STAGING}", "command": ["init_staging"]}]}'
+  when: manual
   only:
     - master
   tags:
     - linux
-    - shell
+    - docker
+    - aws
