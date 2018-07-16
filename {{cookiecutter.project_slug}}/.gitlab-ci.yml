@@ -71,10 +71,10 @@ test_main:
   services:
     {% if cookiecutter.database_type == "mysql" -%}
     - mysql:5.7
-    - redis:latest
-  {% elif cookiecutter.database_type == "postgres" -%}
+    {% elif cookiecutter.database_type == "postgres" -%}
     - postgres:latest
-  {% endif -%}
+    {% endif -%}
+    - redis:latest
   image: $CONTAINER_TEST_IMAGE
   script:
     - ./entrypoint.sh test
@@ -91,10 +91,10 @@ test_debug:
   services:
     {% if cookiecutter.database_type == "mysql" -%}
     - mysql:5.7
-    - redis:latest
-  {% elif cookiecutter.database_type == "postgres" -%}
+    {% elif cookiecutter.database_type == "postgres" -%}
     - postgres:latest
-  {% endif -%}
+    {% endif -%}
+    - redis:latest
   image: $CONTAINER_TEST_IMAGE
   script:
     - ./entrypoint.sh test
