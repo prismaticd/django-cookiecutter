@@ -114,7 +114,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = '{{cookiecutter.project_slug}}.wsgi.application'
 
-{%- if cookiecutter.install_allauth == "y" %}
+{% if cookiecutter.install_allauth == "y" -%}
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
@@ -160,7 +160,6 @@ TIME_ZONE = 'Pacific/Auckland'
 USE_I18N = False
 USE_L10N = False
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
