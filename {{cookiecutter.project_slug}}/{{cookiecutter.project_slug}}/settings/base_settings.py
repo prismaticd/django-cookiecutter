@@ -10,16 +10,17 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import re
-from typing import List
 
 from django.template import base
+
+# from typing import List
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 DEBUG = False
-ALLOWED_HOSTS = []  #  type: List[str]
+ALLOWED_HOSTS = []  # type: List[str]
 
 # Application definition
 INSTALLED_APPS = [
@@ -55,17 +56,17 @@ INSTALLED_APPS = [
 {%- endif %}
 {%- if cookiecutter.install_wagtail == "y" %}
 
-    'wagtail.wagtailforms',
-    'wagtail.wagtailredirects',
-    'wagtail.wagtailembeds',
-    'wagtail.wagtailsites',
-    'wagtail.wagtailusers',
-    'wagtail.wagtailsnippets',
-    'wagtail.wagtaildocs',
-    'wagtail.wagtailimages',
-    'wagtail.wagtailsearch',
-    'wagtail.wagtailadmin',
-    'wagtail.wagtailcore',
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
 
     'modelcluster',
     'taggit',
@@ -86,9 +87,10 @@ MIDDLEWARE = [
     '{{cookiecutter.project_slug}}.apps.profile.middleware.ProfileMiddleware',
 {%- endif %}
 {% if cookiecutter.install_wagtail == "y" %}
-    'wagtail.wagtailcore.middleware.SiteMiddleware',
-    'wagtail.wagtailredirects.middleware.RedirectMiddleware',
-{% endif %}
+    'wagtail.core.middleware.SiteMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+
+{% endif -%}
 ]  # List[str]
 
 ROOT_URLCONF = '{{cookiecutter.project_slug}}.urls'
@@ -112,7 +114,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = '{{cookiecutter.project_slug}}.wsgi.application'
 
-{% if cookiecutter.install_allauth == "y" %}
+{% if cookiecutter.install_allauth == "y" -%}
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
@@ -121,7 +123,6 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 {%- endif %}
-
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -132,7 +133,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -152,7 +152,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -161,7 +160,6 @@ TIME_ZONE = 'Pacific/Auckland'
 USE_I18N = False
 USE_L10N = False
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -222,7 +220,7 @@ MEDIA_SECRET = 'change_me_in_prod'
 # http://zachsnow.com/#!/blog/2016/multiline-template-tags-django/
 base.tag_re = re.compile(base.tag_re.pattern, re.DOTALL)
 
-{% if cookiecutter.install_rq == "y" %}
+{%- if cookiecutter.install_rq == "y" %}
 CACHES = {
     'default': {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -247,10 +245,9 @@ STATIC_LOGGING = {
 }
 {% if cookiecutter.install_wagtail == "y" %}
 WAGTAIL_SITE_NAME = '{{cookiecutter.project_slug}}'
-{% endif %}
+{% endif -%}
 
-{% if cookiecutter.install_allauth == "y" %}
-
+{%- if cookiecutter.install_allauth == "y" %}
 # DJANGO ALLAUTH CONFIG: http://django-allauth.readthedocs.io/en/stable/configuration.html
 ACCOUNT_USER_DISPLAY = "allauth.account.utils.user_email"
 ACCOUNT_AUTHENTICATION_METHOD = "email"
@@ -263,4 +260,4 @@ ACCOUNT_ADAPTER = "{{cookiecutter.project_slug}}.apps.myauth.adapters.AccountAda
 LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'profile:edit'
 LOGOUT_REDIRECT_URL = 'account_login'
-{% endif %}
+{% endif -%}

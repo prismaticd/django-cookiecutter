@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from .apps import HomeConfig
-{% if cookiecutter.install_wagtail == "y" %}
-from django.db import models
+{% if cookiecutter.install_wagtail == "y" -%}
 from typing import List
-from wagtail.wagtailcore import blocks
 
-from wagtail.wagtailcore.models import Page, Orderable
-from wagtail.wagtailcore.fields import RichTextField, StreamField
-from wagtail.wagtailadmin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
-from wagtail.wagtailimages.blocks import ImageChooserBlock
+from wagtail.admin.edit_handlers import StreamFieldPanel
+from wagtail.core import blocks
+from wagtail.core.fields import StreamField
+from wagtail.core.models import Page, Orderable
+from wagtail.images.blocks import ImageChooserBlock
+
 
 class HomePage(Page):
     parent_page_types = []  # type: List[str]
