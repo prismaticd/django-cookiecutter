@@ -200,7 +200,7 @@ deploy_uat:
     - >
       export RELEASE_ID=$(echo ${LAST_TASK} | rev | cut -d: -f1 | rev);
       slack_release_message.sh;
-      export NR_APPLICATION_ID=${NR_APPLICATION_ID_UAT}";
+      export NR_APPLICATION_ID=${NR_APPLICATION_ID_UAT};
       new_relic_deploy_message.sh
   only:
     - uat
