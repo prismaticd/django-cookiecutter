@@ -152,9 +152,9 @@ deploy_staging:
     - ecs-deploy -n $AWS_ECS_STAGING_SERVICE -c $AWS_ECS_CLUSTER -r $AWS_REGION --max-definitions 9 -i $AWS_CONTAINER_IMAGE
     - LAST_TASK=$(aws ecs list-task-definitions --region=$AWS_REGION --sort DESC --status ACTIVE --family-prefix $AWS_ECS_STAGING_TASK --max-items 1 | jq -r '.taskDefinitionArns[0]')
     - >
-      aws ecs run-task --cluster $AWS_ECS_CLUSTER --region=$AWS_REGION --task-definition ${LAST_TASK} --overrides '{"containerOverrides":[{"name": "${CONTAINER_STAGING}", "command": ["manage", "migrate"]}]}'
+      aws ecs run-task --cluster $AWS_ECS_CLUSTER --region=$AWS_REGION --task-definition ${LAST_TASK} --overrides "{\"containerOverrides\":[{\"name\": \"${CONTAINER_STAGING}\", \"command\": [\"manage\", \"migrate\"]}]}"
     - >
-      export RELEASE_ID=$(echo ${LAST_TASK} | rev | cut -d: -f1 | rev)
+      export RELEASE_ID=$(echo ${LAST_TASK} | rev | cut -d: -f1 | rev);
       slack_release_message.sh;
       export NR_APPLICATION_ID=${NR_APPLICATION_ID_STAGING};
       new_relic_deploy_message.sh
@@ -196,9 +196,9 @@ deploy_uat:
     - ecs-deploy --timeout 300 -n ${AWS_ECS_UAT_SERVICE} -c ${AWS_ECS_CLUSTER} -r ${AWS_REGION} --max-definitions 9 -i ${AWS_CONTAINER_IMAGE_UAT}
     - LAST_TASK=$(aws ecs list-task-definitions --region=$AWS_REGION --sort DESC --status ACTIVE --family-prefix $AWS_ECS_UAT_TASK --max-items 1 | jq -r '.taskDefinitionArns[0]')
     - >
-      aws ecs run-task --cluster $AWS_ECS_CLUSTER --region=$AWS_REGION --task-definition ${LAST_TASK} --overrides '{"containerOverrides":[{"name": "${CONTAINER_UAT}", "command": ["manage", "migrate"]}]}'
+      aws ecs run-task --cluster $AWS_ECS_CLUSTER --region=$AWS_REGION --task-definition ${LAST_TASK} --overrides "{\"containerOverrides\":[{\"name\": \"${CONTAINER_UAT}\", \"command\": [\"manage\", \"migrate\"]}]}"
     - >
-      export RELEASE_ID=$(echo ${LAST_TASK} | rev | cut -d: -f1 | rev)
+      export RELEASE_ID=$(echo ${LAST_TASK} | rev | cut -d: -f1 | rev);
       slack_release_message.sh;
       export NR_APPLICATION_ID=${NR_APPLICATION_ID_UAT}";
       new_relic_deploy_message.sh
@@ -231,7 +231,7 @@ reset_staging:
     # Get the name of the container
     - LAST_TASK=$(aws ecs list-task-definitions --region=$AWS_REGION --sort DESC --status ACTIVE --family-prefix $AWS_ECS_STAGING_TASK --max-items 1 | jq -r '.taskDefinitionArns[0]')
     - >
-      aws ecs run-task --cluster $AWS_ECS_CLUSTER --region=$AWS_REGION --task-definition ${LAST_TASK} --overrides '{"containerOverrides":[{"name": "${CONTAINER_STAGING}", "command": ["init_staging"]}]}'
+      aws ecs run-task --cluster $AWS_ECS_CLUSTER --region=$AWS_REGION --task-definition ${LAST_TASK} --overrides "{\"containerOverrides\":[{\"name\": \"${CONTAINER_STAGING}\", \"command\": [\"init_staging\"]}]}"
   when: manual
   only:
     - master
