@@ -10,8 +10,8 @@ from .views import HomePageView
 logger = logging.getLogger(__name__)
 
 
-class HomeApp(object):
-    name = "home_app"
+class CoreApp(object):
+    name = "core_app"
 
     def get_urls(self):
         urlpatterns = [
@@ -21,7 +21,7 @@ class HomeApp(object):
 
     @property
     def urls(self):
-        return self.get_urls(), 'home_app', self.name
+        return self.get_urls(), 'core_app', self.name
 
 
-home = HomeApp()
+core = CoreApp()
