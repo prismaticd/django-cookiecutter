@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
 {% endif %}
-    '{{cookiecutter.project_slug}}.apps.home.apps.HomeConfig',
+    '{{cookiecutter.project_slug}}.apps.core.apps.CoreConfig',
 
 {%- if cookiecutter.install_allauth == "y" %}
     '{{cookiecutter.project_slug}}.apps.myauth',

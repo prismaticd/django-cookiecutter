@@ -18,7 +18,7 @@ class MyLoginView(allauth_views.LoginView):
 
 class MyEmailView(allauth_views.EmailView):
     template_name = "email.html"
-    #success_url = reverse_lazy('profile:edit')
+    # success_url = reverse_lazy('profile:edit')
 
 
 class MyConfirmEmailView(allauth_views.ConfirmEmailView):
@@ -32,7 +32,7 @@ class MyPasswordChangeView(allauth_views.PasswordChangeView):
 
 class MyPasswordSetView(allauth_views.PasswordSetView):
     template_name = "password_set.html"
-    success_url = reverse_lazy('home_app:home-page')
+    success_url = reverse_lazy('core_app:home-page')
 
 
 class MyPasswordResetView(allauth_views.PasswordResetView):
