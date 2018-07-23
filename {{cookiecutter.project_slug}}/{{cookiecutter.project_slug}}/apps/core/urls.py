@@ -14,14 +14,12 @@ class CoreApp(object):
     name = "core_app"
 
     def get_urls(self):
-        urlpatterns = [
-            url(r'$', HomePageView.as_view(), name='home-page'),
-        ]
+        urlpatterns = [url(r"$", HomePageView.as_view(), name="home-page")]
         return urlpatterns
 
     @property
     def urls(self):
-        return self.get_urls(), 'core_app', self.name
+        return self.get_urls(), "core_app", self.name
 
 
 core = CoreApp()

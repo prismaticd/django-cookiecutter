@@ -8,12 +8,12 @@ logger = logging.getLogger(__name__)
 
 class MySignupView(allauth_views.SignupView):
     template_name = "register.html"
-    success_url = reverse_lazy('profile:edit')
+    success_url = reverse_lazy("profile:edit")
 
 
 class MyLoginView(allauth_views.LoginView):
     template_name = "login.html"
-    success_url = reverse_lazy('profile:edit')
+    success_url = reverse_lazy("profile:edit")
 
 
 class MyEmailView(allauth_views.EmailView):
@@ -22,17 +22,17 @@ class MyEmailView(allauth_views.EmailView):
 
 
 class MyConfirmEmailView(allauth_views.ConfirmEmailView):
-    success_url = reverse_lazy('profile:edit')
+    success_url = reverse_lazy("profile:edit")
 
 
 class MyPasswordChangeView(allauth_views.PasswordChangeView):
     template_name = "password_change.html"
-    success_url = reverse_lazy('profile:edit')
+    success_url = reverse_lazy("profile:edit")
 
 
 class MyPasswordSetView(allauth_views.PasswordSetView):
     template_name = "password_set.html"
-    success_url = reverse_lazy('core_app:home-page')
+    success_url = reverse_lazy("core_app:home-page")
 
 
 class MyPasswordResetView(allauth_views.PasswordResetView):

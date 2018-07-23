@@ -14,6 +14,7 @@ project_sass_dir = Path(project_static_src_dir, "sass")
 # cookiecutter doesn't support conditional creation of files,
 # so instead we delete the ones we don't want
 
+
 def delete(path):
     if path.is_dir():
         shutil.rmtree(path)
@@ -22,15 +23,9 @@ def delete(path):
 
 
 if not install_allauth:
-    for path in [
-        Path(apps_dir, "myauth"),
-        Path(apps_dir, "profile"),
-        Path(project_sass_dir, "my_auth.scss"),
-    ]:
+    for path in [Path(apps_dir, "myauth"), Path(apps_dir, "profile"), Path(project_sass_dir, "my_auth.scss")]:
         delete(path)
 
 if not install_allauth or not install_behave_test:
-    for path in [
-        Path(base_dir, "features"),
-    ]:
+    for path in [Path(base_dir, "features")]:
         delete(path)
