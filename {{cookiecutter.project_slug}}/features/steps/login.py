@@ -50,7 +50,7 @@ def step_impl(context: BehaveContext, email_type):
     context.action_url_type = email_type
 
 
-@then(u'the password reset link resets their password')
+@then(u"the password reset link resets their password")
 def step_impl(context: BehaveContext):
     context.test.assertEqual(context.action_url_type, "password reset")
     response = context.test.client.get(context.action_url)
@@ -69,14 +69,14 @@ def step_impl(context: BehaveContext):
     context.test.assertRedirects(response, "/auth/password/reset/key/done/")
 
 
-@then(u'the email confirm link confirms their email')
+@then(u"the email confirm link confirms their email")
 def step_impl(context: BehaveContext):
     context.test.assertEqual(context.action_url_type, "email confirm")
     response = context.test.client.get(context.action_url)
     context.test.assertRedirects(response, "/profile/")
 
 
-@then(u'the user is {neg} redirected to {url}')
+@then(u"the user is {neg} redirected to {url}")
 def step_impl(context: BehaveContext, neg: str, url: str):
     context.test.assertEqual(context.response.status_code, 302, "The user should be redirected")
     if neg == "not":

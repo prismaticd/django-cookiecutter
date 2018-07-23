@@ -10,7 +10,7 @@ def step_impl(context):
     :param context:
     :return:
     """
-    # raise NotImplementedError(u'STEP: Given a new user')
+    # raise NotImplementedError(u"STEP: Given a new user")
     pass
 
 

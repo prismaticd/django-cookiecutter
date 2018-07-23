@@ -16,21 +16,21 @@ from .apps.profile.urls import profile
 from .contrib.health_check import health_check
 
 urlpatterns = [
-    url(r'^healthcheck/', health_check),
+    url(r"^healthcheck/", health_check),
 {%- if cookiecutter.install_rq == "y" %}
-    url(r'^admin/django-rq/', include('django_rq.urls')),
+    url(r"^admin/django-rq/", include("django_rq.urls")),
 {%- endif %}
-    url(r'^admin/', admin.site.urls),
+    url(r"^admin/", admin.site.urls),
 {%- if cookiecutter.install_allauth == "y" %}
-    url(r'^', profile.urls),
+    url(r"^", profile.urls),
 {%- endif %}
-    url(r'^home/', core.urls),
+    url(r"^home/", core.urls),
 {%- if cookiecutter.install_wagtail == "y" %}
-    url(r'^cms/', include(wagtailadmin_urls)),
-    url(r'^documents/', include(wagtaildocs_urls)),
+    url(r"^cms/", include(wagtailadmin_urls)),
+    url(r"^documents/", include(wagtaildocs_urls)),
 {%- endif %}
 {%- if cookiecutter.install_allauth == "y" %}
-    url(r'^auth/', myauth.urls),
+    url(r"^auth/", myauth.urls),
 {%- endif %}
 ]
 
@@ -39,7 +39,7 @@ if settings.DEBUG and getattr(settings, "USE_DEBUG_TOOLBAR", settings.DEBUG):  #
     from django.conf.urls.static import static
 
     urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        url(r"^__debug__/", include(debug_toolbar.urls)),
     ]
 
     # Dev static
@@ -47,6 +47,6 @@ if settings.DEBUG and getattr(settings, "USE_DEBUG_TOOLBAR", settings.DEBUG):  #
 
 {% if cookiecutter.install_wagtail == "y" -%}
 urlpatterns += [
-    url(r'^', include(wagtail_urls)),
+    url(r"^", include(wagtail_urls)),
 ]
 {% endif %}
