@@ -15,13 +15,13 @@ class HomePage(Page):
     subpage_types = []  # type: List[str]
 
     body = StreamField([
-        ('heading', blocks.CharBlock(classname="full title")),
-        ('paragraph', blocks.RichTextBlock()),
-        ('image', ImageChooserBlock()),
-        ('link', blocks.URLBlock()),
+        ("heading", blocks.CharBlock(classname="full title")),
+        ("paragraph", blocks.RichTextBlock()),
+        ("image", ImageChooserBlock()),
+        ("link", blocks.URLBlock()),
     ])
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('body'),
+        StreamFieldPanel("body"),
     ]
 {% endif %}

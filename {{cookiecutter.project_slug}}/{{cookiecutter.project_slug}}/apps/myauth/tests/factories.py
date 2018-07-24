@@ -6,10 +6,11 @@ User = get_user_model()
 
 
 class EmailAddressFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = EmailAddress
 
-    email = factory.Faker('email')
+    email = factory.Faker("email")
 
 
 class VerifiedEmailAddressFactory(EmailAddressFactory):
@@ -17,16 +18,17 @@ class VerifiedEmailAddressFactory(EmailAddressFactory):
 
 
 class UserFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = get_user_model()
 
-    username = factory.Faker('user_name')
-    email = factory.Faker('email')
+    username = factory.Faker("user_name")
+    email = factory.Faker("email")
 
     # generate allauth EmailAddress entry that matches the User.email field
-    emailaddress_set = factory.RelatedFactory(EmailAddressFactory, 'user',
-                                              primary=True,
-                                              email=factory.SelfAttribute('..email'))
+    emailaddress_set = factory.RelatedFactory(
+        EmailAddressFactory, "user", primary=True, email=factory.SelfAttribute("..email")
+    )
 
     @factory.post_generation
     def extra_emails(self, create, count: int):
@@ -44,7 +46,7 @@ class UserFactory(factory.django.DjangoModelFactory):
             return
 
         if count:
-           VerifiedEmailAddressFactory.create_batch(size=count, user=self)
+            VerifiedEmailAddressFactory.create_batch(size=count, user=self)
 
 
 class VerifiedUserFactory(UserFactory):
@@ -52,6 +54,6 @@ class VerifiedUserFactory(UserFactory):
     # TODO - how can we avoid this duplicated definition?
 
     # generate allauth EmailAddress entry that matches the User.email field
-    emailaddress_set = factory.RelatedFactory(VerifiedEmailAddressFactory, 'user',
-                                              primary=True,
-                                              email=factory.SelfAttribute('..email'))
+    emailaddress_set = factory.RelatedFactory(
+        VerifiedEmailAddressFactory, "user", primary=True, email=factory.SelfAttribute("..email")
+    )
