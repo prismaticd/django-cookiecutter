@@ -94,6 +94,29 @@ INIT_AUTH_GOOGLE_SECRET_KEY = 'todo'
 ```
 {% endif %}
 
+
+## Seeding random values
+
+To explicitly set a random seed (used by both `manage.py init_data` and tests)
+
+```bash
+export PYTHON_RANDOM_SEED=123
+```
+
+Or to choose a random seed and print it.
+
+```bash
+export PYTHON_RANDOM_SEED=random
+```
+
+### Searching for a random failure
+
+To find a seed that's causing failures, this is a useful bash script.  Change the test command to be as specific as you can in order to get to a quickly reproducible error:
+
+```
+echo "Searching for failing seed"; while [[ $? == 0 ]]; do export PYTHON_RANDOM_SEED=$RANDOM; ./manage.py test; done; echo "found failing seed $PYTHON_RANDOM_SEED"
+```
+
 ## To run coverage locally
 
  ```
