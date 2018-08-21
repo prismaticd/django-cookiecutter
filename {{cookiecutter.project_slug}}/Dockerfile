@@ -1,4 +1,4 @@
-FROM bchabord/django-nginx:3
+FROM prismaticd/django-nginx:3
 
 EXPOSE 9808
 
