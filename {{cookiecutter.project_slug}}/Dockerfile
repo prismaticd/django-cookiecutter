@@ -1,4 +1,4 @@
-FROM prismaticd/django-nginx:3
+FROM prismaticd/django-nginx:3.6
 
 EXPOSE 9808
 
