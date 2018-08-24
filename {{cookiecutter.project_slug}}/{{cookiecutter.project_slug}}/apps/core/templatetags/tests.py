@@ -3,6 +3,7 @@ from django.test import TestCase
 
 
 class TestTags(TestCase):
+
     def render_template(self, string, context=None):
         """
         helper function for template tag testing, from https://stackoverflow.com/a/1690879/
@@ -16,6 +17,7 @@ class TestTags(TestCase):
         return Template(string).render(context)
 
     def test_define(self):
+{%- raw %}
         template = """
         {% load myfilters %}
         {% if item %}
@@ -25,6 +27,7 @@ class TestTags(TestCase):
         {% endif %}
         Would you like to {{action}} this item
         """
+{%- endraw %}
 
         expected_default = "Would you like to Create this item"
 
