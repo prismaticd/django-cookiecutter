@@ -1,7 +1,7 @@
 import logging
 
 from allauth.account import views as allauth_views
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 
 logger = logging.getLogger(__name__)
 
