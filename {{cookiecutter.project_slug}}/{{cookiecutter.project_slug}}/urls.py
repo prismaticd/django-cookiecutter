@@ -5,8 +5,8 @@ from django.conf.urls import url, include
 from django.contrib import admin
 {% if cookiecutter.install_wagtail == "y" -%}
 from wagtail.admin import urls as wagtailadmin_urls
-from wagtail.core import urls as wagtail_urls{% endif %}
-from wagtail.documents import urls as wagtaildocs_urls
+from wagtail.core import urls as wagtail_urls
+from wagtail.documents import urls as wagtaildocs_urls{% endif %}
 
 from .apps.core.urls import core
 {%- if cookiecutter.install_allauth == "y" %}
