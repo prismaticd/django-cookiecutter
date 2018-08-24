@@ -70,7 +70,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </a>
           </div>
 
-          <div class="navbar-end">
+          <div class="navbar-ed">
+{%- endraw %}{% if cookiecutter.install_allauth == "y" %}{% raw -%}
             {% if request.user.is_authenticated %}
               <a href="{% url 'profile:edit' %}" class="navbar-item">Profile</a>
               <a class="navbar-item"  href="{% url 'account_logout' %}">
@@ -81,6 +82,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 Login
                 </a>
             {% endif %}
+{% endraw %}{% endif %}{% raw %}
           </div>
         </div>
        </nav>
