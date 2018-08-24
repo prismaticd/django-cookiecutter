@@ -11,7 +11,7 @@ def addclass(value, arg):
     return value.as_widget(attrs={"class": arg})
 
 
-@register.assignment_tag
+@register.simple_tag
 def define(val=None):
 {% raw %}
     """
