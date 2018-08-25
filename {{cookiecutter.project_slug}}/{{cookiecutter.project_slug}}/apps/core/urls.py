@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class CoreApp(object):
-    name = "core_app"
+    name = "core"
 
     def get_urls(self):
         urlpatterns = [url(r"$", HomePageView.as_view(), name="home-page")]
@@ -19,7 +19,8 @@ class CoreApp(object):
 
     @property
     def urls(self):
-        return self.get_urls(), "core_app", self.name
+        # as per django.contrib.admin.sites.AdminSite#urls
+        return self.get_urls(), "core", self.name
 
 
 core = CoreApp()
