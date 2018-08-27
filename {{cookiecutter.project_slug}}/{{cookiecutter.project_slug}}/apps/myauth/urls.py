@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class AuthApp(object):
-    name = "myauth_app"
+    name = ""
 
     def get_urls(self):
         urlpatterns = [
@@ -44,8 +44,9 @@ class AuthApp(object):
 
     @property
     def urls(self):
+        # as per django.contrib.admin.sites.AdminSite#urls
         # no namespace for compatibility with django-allauth
-        return self.get_urls(), self.name, ""
+        return self.get_urls(), "", self.name
 
 
 myauth = AuthApp()

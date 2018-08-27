@@ -32,7 +32,7 @@ class MyPasswordChangeView(allauth_views.PasswordChangeView):
 
 class MyPasswordSetView(allauth_views.PasswordSetView):
     template_name = "password_set.html"
-    success_url = reverse_lazy("core_app:home-page")
+    success_url = reverse_lazy("core:home-page")
 
 
 class MyPasswordResetView(allauth_views.PasswordResetView):
