@@ -16,7 +16,7 @@ class ProfileMiddleware(object):
     def __call__(self, request):
         # type: (HttpRequest) -> HttpResponseRedirect
         to_avoid = any(url not in str(request.path) for url in [reverse("profile:edit"), "logout", "cms", "admin"])
-        if request.user.is_authenticated() and not to_avoid:
+        if request.user.is_authenticated and not to_avoid:
             try:
                 profile = request.user.profile
             except (ObjectDoesNotExist, GeneratedEmailMissingException):
