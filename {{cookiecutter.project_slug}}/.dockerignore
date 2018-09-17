@@ -6,3 +6,5 @@ db.sqlite3
 .static/
 media/
 local.py
+**/*.env
+.git/
