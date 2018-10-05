@@ -6,7 +6,7 @@ stages:
 - actions
 
 variables:
-  CONTAINER_TEST_IMAGE: registry.gitlab.com/{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}:$CI_BUILD_REF_NAME
+  CONTAINER_TEST_IMAGE: registry.gitlab.com/{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}:$CI_COMMIT_REF_NAME
   CONTAINER_RELEASE_IMAGE: registry.gitlab.com/{{cookiecutter.gitlab_group}}/{{cookiecutter.gitlab_project_slug}}:latest
   DOCKER_DRIVER: overlay
   {% if cookiecutter.database_type == "mysql" -%}
@@ -52,7 +52,7 @@ build:
   stage: build
   retry: 2
   before_script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   script:
     - >
       ./conf/generate_meta.sh;
@@ -126,7 +126,7 @@ release-image:
 #  services:
 #    - docker:dind
   before_script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   script:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
@@ -172,7 +172,7 @@ release-image-uat:
   stage: release-image
   retry: 2
   before_script:
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
   script:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
