@@ -12,6 +12,20 @@ echo "SECRET_KEY = 'randomstring'" >> {{cookiecutter.project_slug}}/settings/loc
 ./manage.py init_data
 ```
 
+# Code formatting style
+
+This project is using the python code formatter `black` (with line length override).
+
+Basic usage:
+
+```bash
+black {{cookiecutter.project_slug}}
+```
+
+See https://github.com/ambv/black
+
+Configuration defaults are in `pyproject.toml` - see https://github.com/ambv/black#configuration-format
+
 
 # Useful dev commands / config
 
