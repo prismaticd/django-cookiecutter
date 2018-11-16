@@ -8,7 +8,6 @@ boto
 requests
 django-settings-export
 
-django-import-export
 django-storages
 boto3
 {%- if cookiecutter.install_rq == "y" %}

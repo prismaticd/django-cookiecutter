@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     "{{cookiecutter.project_slug}}.apps.profile.apps.ProfileConfig",
 {%- endif %}
 
-    "import_export",
 {%- if cookiecutter.install_rq == "y" %}
 
     "django_rq",
