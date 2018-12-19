@@ -3,13 +3,12 @@ pip>9
 django~=1.11.10
 {%- if cookiecutter.install_wagtail == "y" %}
 # LTS
-wagtail~=1.13.1
+wagtail~=2.3.0
 {%- endif %}
 boto
 requests
 django-settings-export
 
-django-import-export
 django-storages
 boto3
 {%- if cookiecutter.install_rq == "y" %}

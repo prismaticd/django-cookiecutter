@@ -10,18 +10,17 @@ from .views import HomePageView
 logger = logging.getLogger(__name__)
 
 
-class HomeApp(object):
-    name = "home_app"
+class CoreApp(object):
+    name = "core"
 
     def get_urls(self):
-        urlpatterns = [
-            url(r'$', HomePageView.as_view(), name='home-page'),
-        ]
+        urlpatterns = [url(r"$", HomePageView.as_view(), name="home-page")]
         return urlpatterns
 
     @property
     def urls(self):
-        return self.get_urls(), 'home_app', self.name
+        # as per django.contrib.admin.sites.AdminSite#urls
+        return self.get_urls(), "core", self.name
 
 
-home = HomeApp()
+core = CoreApp()

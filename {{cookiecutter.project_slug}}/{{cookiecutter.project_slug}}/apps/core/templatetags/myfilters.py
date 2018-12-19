@@ -3,15 +3,15 @@ from django import template
 register = template.Library()
 
 
-@register.filter(name='addclass')
+@register.filter(name="addclass")
 def addclass(value, arg):
     #  Add a custom class to a form widget and add is-danger if there are errors
-    if hasattr(value, 'errors') and value.errors:
-        arg = 'is-danger ' + arg
-    return value.as_widget(attrs={'class': arg})
+    if hasattr(value, "errors") and value.errors:
+        arg = "is-danger " + arg
+    return value.as_widget(attrs={"class": arg})
 
 
-@register.assignment_tag
+@register.simple_tag
 def define(val=None):
 {% raw %}
     """

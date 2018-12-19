@@ -5,6 +5,7 @@ PyMySQL
 django-debug-toolbar
 django-extensions
 factory_boy
+black
 {%- if cookiecutter.install_behave_test == "y" %}
 behave
 behave-django

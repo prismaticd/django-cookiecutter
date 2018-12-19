@@ -4,34 +4,32 @@ from django.core import mail
 from features.hints import BehaveContext
 
 
-@given('a new user')
+@given("a new user")
 def step_impl(context):
     """
     :param context:
     :return:
     """
-    # raise NotImplementedError(u'STEP: Given a new user')
+    # raise NotImplementedError(u"STEP: Given a new user")
     pass
 
 
-@when('they register using {auth_type}')
+@when("they register using {auth_type}")
 def step_impl(context: BehaveContext, auth_type):
     if auth_type == "email/password":
-        context.response = context.test.client.post("/auth/register/", data={
-            "email": "test@test.com",
-            "password1": "qwertyuiop",
-            "password2": "qwertyuiop"})
+        context.response = context.test.client.post(
+            "/auth/register/", data={"email": "test@test.com", "password1": "qwertyuiop", "password2": "qwertyuiop"}
+        )
     else:
-        raise NotImplementedError(u'STEP: When they register using {}'.format(auth_type))
+        raise NotImplementedError(u"STEP: When they register using {}".format(auth_type))
 
-@when('set up their profile')
+
+@when("set up their profile")
 def step_impl(context: BehaveContext, auth_type):
-    context.response = context.test.client.post("/profile/", data={
-        "first_name": "first",
-        "last_name": "last",
-    })
+    context.response = context.test.client.post("/profile/", data={"first_name": "first", "last_name": "last"})
 
-@then('they need to confirm their email')
+
+@then("they need to confirm their email")
 def step_impl(context: BehaveContext):
     """
     :param behave_django.environment.PatchedContext context:
@@ -44,7 +42,7 @@ def step_impl(context: BehaveContext):
     # TODO - check that email confirm works + is required
 
 
-@then('the user is on the page {url}')
+@then("the user is on the page {url}")
 def step_impl(context: BehaveContext, url):
     response = context.response
     context.test.assertEqual(response.status_code, 302)
@@ -52,7 +50,7 @@ def step_impl(context: BehaveContext, url):
     context.response = context.test.client.get(response.url)
 
 
-@then('the user has a {thing}')
+@then("the user has a {thing}")
 def step_impl(context: BehaveContext, thing: str):
     response = context.response  # type: django.test.Responser
     if thing == "profile":
@@ -62,8 +60,9 @@ def step_impl(context: BehaveContext, thing: str):
     elif thing == "rule_id":
         context.test.assertIsNotNone(response.context["user"].profile.rule_id)
     else:
-        raise NotImplementedError(u'STEP:the user has a {thing}'.format(thing))
+        raise NotImplementedError(u"STEP:the user has a {thing}".format(thing))
 
-@then('they don\'t need to confirm their email')
+
+@then("they don't need to confirm their email")
 def step_impl(context: BehaveContext):
     context.test.assertEqual(len(mail.outbox), 0)

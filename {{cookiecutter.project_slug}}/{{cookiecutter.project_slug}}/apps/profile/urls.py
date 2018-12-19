@@ -11,17 +11,16 @@ logger = logging.getLogger(__name__)
 
 
 class ProfileApp(object):
-    name = "profile_app"
+    name = "profile"
 
     def get_urls(self):
-        urlpatterns = [
-            url(r'^profile/$', views.MyProfileView.as_view(), name='edit'),
-        ]
+        urlpatterns = [url(r"^profile/$", views.MyProfileView.as_view(), name="edit")]
         return urlpatterns
 
     @property
     def urls(self):
-        return self.get_urls(), self.name, 'profile'
+        # as per django.contrib.admin.sites.AdminSite#urls
+        return self.get_urls(), "profile", self.name
 
 
 profile = ProfileApp()

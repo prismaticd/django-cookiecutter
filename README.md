@@ -4,4 +4,4 @@
 
 ## Long Term Support (LTS) branch
 
-The branch `lts` should be left with versions of Django (and if used) Wagtail that are LTS releases.  As of March 2018 that is Django 1.11 and Wagtail 1.13.
+The branch `lts` should be left with versions of Django (and if used) Wagtail that are LTS releases.  As of December 2018 that is Django 1.11 and Wagtail 2.3.
