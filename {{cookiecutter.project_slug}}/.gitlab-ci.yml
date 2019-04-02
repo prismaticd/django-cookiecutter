@@ -94,6 +94,10 @@ test_sqlite:
   script:
     # --parallel speeds up sqlite tests but doesn't seems to help mysql much
     - ./entrypoint.sh test --parallel
+  except:
+    # no point in running vs sqlite for deployment environments
+    - staging
+    - prod
   tags:
     - linux
     - docker
