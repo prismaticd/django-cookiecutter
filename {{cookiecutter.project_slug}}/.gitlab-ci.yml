@@ -85,25 +85,6 @@ test_main:
     paths:
       - coverage/
 
-test_debug:
-  # Check for issues that only cause failures when DEBUG=True (eg missing Django templates)
-  stage: test
-  services:
-    {% if cookiecutter.database_type == "mysql" -%}
-    - mysql:5.7
-    {% elif cookiecutter.database_type == "postgres" -%}
-    - postgres:latest
-    {% endif -%}
-    - redis:latest
-  image: $CONTAINER_TEST_IMAGE
-  script:
-    - ./entrypoint.sh test
-  tags:
-    - linux
-    - docker
-  variables:
-    DEBUG: 1
-
 test_sqlite:
   # Check for issues that only affect sqlite (to avoid breaking frontend dev environment)
   stage: test
