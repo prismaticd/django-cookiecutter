@@ -20,26 +20,26 @@ gulp.task('sass', function () {
 
 const imagemin = require('gulp-imagemin');
 gulp.task('images', function(cb) {
-    gulp.src(root_input + 'images/*')
+    return gulp.src(root_input + 'images/*')
         .pipe(imagemin())
         .pipe(gulp.dest(root_output + 'images'))
 });
 
 gulp.task('logo', function(cb) {
-    gulp.src(root_input + 'logo/*')
+    return gulp.src(root_input + 'logo/*')
         .pipe(imagemin())
         .pipe(gulp.dest(root_output + 'logo'))
 });
 
 gulp.task('icons', function(cb) {
-    gulp.src(root_input + 'icons/*')
+    return gulp.src(root_input + 'icons/*')
         .pipe(imagemin())
         .pipe(gulp.dest(root_output + 'icons'))
 });
 
 
 gulp.task('image_playground', function(cb) {
-    gulp.src(root_input + 'image_playground/input/*')
+    return gulp.src(root_input + 'image_playground/input/*')
         .pipe(imagemin())
         .pipe(gulp.dest(root_input + 'image_playground/output'))
 });
@@ -47,7 +47,7 @@ gulp.task('image_playground', function(cb) {
 var uglify = require('gulp-uglify');
 
 gulp.task('js', function() {
-  gulp.src(root_input + 'js/**/*.js')
+  return gulp.src(root_input + 'js/**/*.js')
       .pipe(sourcemaps.init())
     .pipe(uglify())
       .pipe(sourcemaps.write("sourcemaps/"))
@@ -58,10 +58,10 @@ gulp.task('js', function() {
 
 gulp.task('watch', function () {
     refresh.listen();
-  gulp.watch(root_input + "sass/**/*.scss", ['sass']);
-  gulp.watch(root_input + "js/**/*.js", ['js']);
+  gulp.watch(root_input + "sass/**/*.scss", gulp.parallel('sass'));
+  gulp.watch(root_input + "js/**/*.js", gulp.parallel('js'));
   gulp.watch(root_input + "../**/templates/**/*.html").on("change", refresh.reload);
 });
 
-gulp.task('default', ['sass', 'js', 'watch']);
-gulp.task('img', ['images', 'logo', 'icons']);
+gulp.task('default', gulp.parallel('sass', 'js', 'watch'));
+gulp.task('img', gulp.parallel('images', 'logo', 'icons'));
