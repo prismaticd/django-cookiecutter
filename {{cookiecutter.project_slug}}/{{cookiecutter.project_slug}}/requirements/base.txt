@@ -1,9 +1,10 @@
-pip>9
+pip>=19
 # LTS
-django~=1.11.10
+django~=2.2.0
 {%- if cookiecutter.install_wagtail == "y" %}
-# LTS
-wagtail~=2.3.0
+# wagtail 2.3 is LTS, but isn't compatible with Django 2.2
+# wagtail 2.7 is next LTS but isn't released yet
+wagtail>=2.6.0,<2.8
 {%- endif %}
 boto
 requests

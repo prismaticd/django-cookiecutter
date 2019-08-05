@@ -1,22 +1,22 @@
-# -*- coding: utf-8 -*-
+import logging
 
 from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 
 from . import views
 
-import logging
-
 logger = logging.getLogger(__name__)
 
 
 class AuthApp(object):
+    # no namespace for compatibility with django-allauth
     name = ""
 
     def get_urls(self):
         urlpatterns = [
             url(r"^login/$", views.MyLoginView.as_view(), {"template_name": "login.html"}, name="account_login"),
-            url(r"^logout/$", auth_views.logout, name="account_logout"),
+            # TODO - should we subclass as MyLogoutView?
+            url(r"^logout/$", auth_views.LogoutView.as_view(), name="account_logout"),
             url(
                 r"^register/$", views.MySignupView.as_view(), {"template_name": "register.html"}, name="account_signup"
             ),
